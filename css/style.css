@@ -1,0 +1,46 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+.game {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #414141;
+}
+.active_card {
+    height: 25%;
+    width: 25%;
+    float: left;
+}
+.card {
+    height: 25%;
+    width: 25%;
+    float: left;
+}
+.flipper {
+    height: 96%;
+    width: 98%;
+}
+.b {
+    height: 100%;
+    width: 100%;
+    background: #345a5a;
+}
+.f {
+    height: 100%;
+    width: 100%;
+    background: #9f4545;
+}
+.active_card .flipper .b {
+    display: none;
+}
+.active_card .flipper .f {
+    display: block;
+}
+.card .flipper .b {
+    display: block;
+}
+.card .flipper .f {
+    display: none;
+}
