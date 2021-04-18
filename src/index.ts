@@ -1,4 +1,5 @@
-class Card {
+console.log("Test");
+/*class Card {
     symbol: string = "";
     inGame: boolean = false;
     isFlipped: boolean = false;
@@ -60,4 +61,4 @@ const settings = {
         time: 230,
         size: 8
     }
-}
+}*/

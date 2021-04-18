@@ -17,21 +17,25 @@
     height: 96%;
     width: 98%;
 }
-.b {
-    display: block;
+
+.b, .f {
     height: 100%;
     width: 100%;
+}
+.b {
+    display: block;
     background: #345a5a;
 }
 .f {
     display: none;
-    height: 100%;
-    width: 100%;
     background: #9f4545;
 }
-.active .flipper .b {
+.card.active .flipper .b {
     display: none;
 }
-.active .flipper .f {
+card.active .flipper .f {
     display: block;
+}
+card.out {
+    visibility: hidden;
 }
