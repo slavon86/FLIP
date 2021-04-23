@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/vchykov/FLIP/issues"
   },
-  "homepage": "https://github.com/vchykov/FLIP#readme"
+  "homepage": "https://github.com/vchykov/FLIP#readme",
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
 }
