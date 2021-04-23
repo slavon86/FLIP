@@ -17,7 +17,6 @@
     height: 96%;
     width: 98%;
 }
-
 .b, .f {
     height: 100%;
     width: 100%;
@@ -33,9 +32,9 @@
 .card.active .flipper .b {
     display: none;
 }
-card.active .flipper .f {
+.card.active .flipper .f {
     display: block;
 }
-card.out {
+.card.out {
     visibility: hidden;
 }
