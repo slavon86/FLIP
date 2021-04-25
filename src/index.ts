@@ -1,10 +1,9 @@
-console.log("Test");
-/*class Card {
-    symbol: string = "";
+class Card {
+    sign string = "";
     inGame: boolean = false;
     isFlipped: boolean = false;
     isEqual(anotherCard: Card): boolean {
-        return this.symbol === anotherCard.symbol;
+        return this.sign === anotherCard.sign;
     }
 }
 
@@ -26,7 +25,7 @@ class Timer {
     constructor(timeSec: number);
     start();
     onTimeout(()=>void);
-    private progress: number; // 0 - 100
+    private progress: number; // 0-100
     onProgressChange((progress: number)=>void);
 }
 
@@ -61,4 +60,5 @@ const settings = {
         time: 230,
         size: 8
     }
-}*/
+}
+

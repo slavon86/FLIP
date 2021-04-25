@@ -1,3 +1,4 @@
-*.js
+/dist/*.js
+/public/*.js
 /node_modules
 /.idea
