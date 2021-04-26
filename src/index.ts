@@ -1,64 +1,17 @@
-class Card {
-    sign string = "";
-    inGame: boolean = false;
-    isFlipped: boolean = false;
-    isEqual(anotherCard: Card): boolean {
-        return this.sign === anotherCard.sign;
+import { renderCards } from "./render";
+import { Card } from "./state";
+
+const signs = "☽☂☏☆☀☁☃☺☽☂☏☆☀☁☃☺";
+const cards: Card[] = signs.split("").map((sign) => {
+    const result = new Card();
+    result.sign = sign;
+    result.inGame = true;
+    result.isFlipped = true;
+    return result;
+});
+
+document.onreadystatechange = function () {
+    if (document.readyState === "complete") {
+        renderCards(cards);
     }
-}
-
-class State {
-    cards: Card[] = [];
-    cardState: CardsState;
-    globalState: GlobalState;
-    current: number;
-    previous: number;
-    difficulty: GameDifficulty;
-
-    startGame(d: GameDifficulty) {
-        const N = settings[d].size;
-        const T = settings[d].time;
-    }
-}
-
-class Timer {
-    constructor(timeSec: number);
-    start();
-    onTimeout(()=>void);
-    private progress: number; // 0-100
-    onProgressChange((progress: number)=>void);
-}
-
-enum GameDifficulty {
-    Easy,
-    Medium,
-    Hard
-}
-
-enum CardsState {
-    NoCardsOpen,
-    OneCardOpen,
-    TwoCardsOpen,
-}
-enum GlobalState {
-    StartScreen,
-    GameInProgress,
-    GameWin,
-    GameFail,
-}
-
-const settings = {
-    Easy: {
-        time: 80,
-        size: 4,
-    },
-    Medium: {
-        time: 140,
-        size: 6,
-    },
-    Hard: {
-        time: 230,
-        size: 8
-    }
-}
-
+};

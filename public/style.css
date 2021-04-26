@@ -1,6 +1,6 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 .game {
     height: 100%;
@@ -27,6 +27,11 @@
 }
 .f {
     display: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1000%;
+    text-align: center;
+    vertical-align: center;
+    color: #b4bebe;
     background: #9f4545;
 }
 .card.active .flipper .b {
