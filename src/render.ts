@@ -1,11 +1,11 @@
 import { Card } from "./state";
-export function renderCards(cards: Card[]) {
-    // clear the field
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function renderCards(cards: Card[]): void {
     const gameElement = document.body.querySelector(".game");
     if (gameElement !== null) {
-        gameElement.textContent = "";
-        // create cards in accord with the array of cards
+        gameElement.textContent = ""; // clear the field
         cards.forEach((card) => {
+            // create cards in accord with the array of cards
             const newCardElement = document.createElement("div");
             newCardElement.className = "card";
             if (card.isFlipped === true) {
