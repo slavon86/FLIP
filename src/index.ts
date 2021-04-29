@@ -2,10 +2,10 @@ import { renderCards } from "./render";
 import { Card } from "./state";
 
 function getRandomInt(max: number): number {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * (max + 1));
 }
-function shuffleOfArray(inputArr: Array<string>): Array<string> {
-    const arr: Array<string> = inputArr.map((value) => value);
+function shuffleOfArray<Type>(inputArr: Array<Type>): Array<Type> {
+    const arr: Array<Type> = inputArr.map((value) => value);
     for (let index = arr.length - 1; index > 0; index--) {
         const randomIndex = getRandomInt(index);
         const shuffledSign = arr[randomIndex];
