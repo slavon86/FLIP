@@ -4,40 +4,43 @@ import { Card } from "./state";
 function getRandomInt(max: number): number {
     return Math.floor(Math.random() * max);
 }
+function shuffleOfArray(inputArr: Array<string>): Array<string> {
+    const arr: Array<string> = inputArr.map((value) => value);
+    for (let index = arr.length - 1; index > 0; index--) {
+        const randomIndex = getRandomInt(index);
+        const shuffledSign = arr[randomIndex];
+        arr[randomIndex] = arr[index];
+        arr[index] = shuffledSign;
+    }
+    return arr;
+}
 
 function generateRandomPairs(
     inputSigns: string,
-    numberOfPairs: number
-): string {
+    numberOfPairs: number,
+    shuffleInput?: boolean
+): Array<string> {
     if (inputSigns.length < numberOfPairs) {
         throw "Incorrect string of signs or number of pairs";
     }
-    let outputSigns: Array<string> = inputSigns
-        .slice(0, numberOfPairs)
-        .split("");
-    outputSigns = outputSigns.concat(outputSigns);
-    const numberOfMix = getRandomInt(numberOfPairs + 1) + numberOfPairs * 2;
-    for (let index = 0; index < numberOfMix; index++) {
-        const firstIndex = getRandomInt(outputSigns.length);
-        const secondIndex = getRandomInt(outputSigns.length);
-        const firstSign = outputSigns[firstIndex];
-        outputSigns[firstIndex] = outputSigns[secondIndex];
-        outputSigns[secondIndex] = firstSign;
+    let outputSigns: Array<string> = inputSigns.split("");
+    if (shuffleInput === true) {
+        outputSigns = shuffleOfArray(outputSigns);
     }
-    return outputSigns.join("");
+    outputSigns = outputSigns.slice(0, numberOfPairs);
+    outputSigns = outputSigns.concat(outputSigns);
+    return shuffleOfArray(outputSigns);
 }
 
-const signs = "☽☂☏☆☀☁☃☺";
+const signs = "☽☂☏☆☀☁☃☺ABCD";
 const pairs = 8;
-const cards: Card[] = generateRandomPairs(signs, pairs)
-    .split("")
-    .map((sign) => {
-        const result = new Card();
-        result.sign = sign;
-        result.inGame = true;
-        result.isFlipped = true;
-        return result;
-    });
+const cards: Card[] = generateRandomPairs(signs, pairs, true).map((sign) => {
+    const result = new Card();
+    result.sign = sign;
+    result.inGame = true;
+    result.isFlipped = true;
+    return result;
+});
 
 document.onreadystatechange = function () {
     if (document.readyState === "complete") {
