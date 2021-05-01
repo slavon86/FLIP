@@ -2,42 +2,114 @@
     margin: 0;
     padding: 0;
 }
-.game {
-    height: 100%;
-    width: 100%;
-    position: absolute;
+
+body {
     background: #414141;
 }
-.card {
-    height: 25%;
-    width: 25%;
-    float: left;
-}
-.flipper {
-    height: 96%;
-    width: 98%;
-}
-.b, .f {
+
+.game {
+    padding: 20px;
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
 }
+
+.progress {
+    height: 40px;
+    width: 100%;
+    display: block;
+}
+
+.left {
+    float: right;
+    height: 20px;
+    width: 50%;
+    background: #9f4545;
+    border-radius: 10px;
+}
+
+.field {
+    height: 100%;
+    width: 100%;
+    display: grid;
+
+    grid-gap: 10px;
+}
+
+.field.easy {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.field.easy .card .flipper .f {
+    font-size: 1000%;
+    height: 200px;
+}
+
+.field.easy .card .flipper .b {
+    height: 200px;
+}
+
+.field.medium {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.field.medium .card .flipper .f {
+    font-size: 650%;
+    height: 130px;
+}
+
+.field.medium .card .flipper .b {
+    height: 130px;
+}
+
+.field.hard {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.field.hard .card .flipper .f {
+    font-size: 450%;
+    height: 100px;
+}
+
+.field.hard .card .flipper .b {
+    height: 100px;
+}
+
+.card {
+
+}
+
+.flipper {
+    height: 100%;
+    width: 100%;
+}
+
+.b, .f {
+    height: 130px;
+    width: 100%;
+    border-radius: 10px;
+}
+
 .b {
     display: block;
     background: #345a5a;
 }
+
 .f {
     display: none;
-    font-size: 1000%;
     text-align: center;
     color: #b4bebe;
     background: #9f4545;
 }
+
 .card.active .flipper .b {
     display: none;
 }
+
 .card.active .flipper .f {
     display: block;
 }
+
 .card.out {
     visibility: hidden;
 }
