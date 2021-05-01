@@ -10,7 +10,7 @@ function generateRandomPairs(
     if (inputSigns.length < numberOfPairs) {
         throw "Incorrect string of signs or number of pairs";
     }
-    let outputSigns: Array<string> = inputSigns.split("");
+    let outputSigns = inputSigns.split("");
     if (shuffleInput === true) {
         outputSigns = shuffleOfArray(outputSigns);
     }
