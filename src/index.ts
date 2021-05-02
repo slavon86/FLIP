@@ -1,50 +1,23 @@
-import { renderCards, renderStartScreen } from "./render";
-import { Card } from "./state";
+import { renderCards, renderStartScreen, changeTheme } from "./render";
+import { Card, State } from "./state";
 import { shuffleOfArray } from "./helpers";
+import { GameDifficulty } from "./state";
 
-function generateRandomPairs(
-    inputSigns: string,
-    difficulty?: string,
-    shuffleInput?: boolean
-): Array<string> {
-    let numberOfPairs = 8;
-    if (difficulty === "medium") {
-        numberOfPairs = 18;
-    }
-    if (difficulty === "hard") {
-        numberOfPairs = 32;
-    }
-    if (inputSigns.length < numberOfPairs) {
-        throw "Incorrect string of signs or number of pairs";
-    }
-    let outputSigns = inputSigns.split("");
-    if (shuffleInput === true) {
-        outputSigns = shuffleOfArray(outputSigns);
-    }
-    outputSigns = outputSigns.slice(0, numberOfPairs);
-    outputSigns = outputSigns.concat(outputSigns);
-    return shuffleOfArray(outputSigns);
-}
-
-const signs = "☽☂☏☆☀☁☃☺1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
-const difficultyOfGame = "hard";
-const cards: Card[] = generateRandomPairs(signs, difficultyOfGame, true).map(
-    (sign) => {
-        const result = new Card();
-        result.sign = sign;
-        result.inGame = true;
-        result.isFlipped = Math.random() > 0.8;
-        return result;
-    }
-);
-
-// document.onreadystatechange = function () {
-//     if (document.readyState === "complete") {
-//         renderCards(cards, difficultyOfGame);
+// const signs = "☽☂☏☆☀☁☃☺1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
+// const difficultyOfGame = "hard";
+// const cards: Card[] = generateRandomPairs(signs, difficultyOfGame, true).map(
+//     (sign) => {
+//         const result = new Card();
+//         result.sign = sign;
+//         result.inGame = true;
+//         result.isFlipped = Math.random() > 0.8;
+//         return result;
 //     }
-// };
+// );
+
+//  renderCards(cards, difficultyOfGame);
 document.onreadystatechange = function () {
     if (document.readyState === "complete") {
-        renderStartScreen();
+        const state = new State();
     }
 };
