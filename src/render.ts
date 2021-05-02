@@ -26,10 +26,10 @@ export function renderCards(cards: Card[], difficulty?: string): void {
             }
             newCardElement.innerHTML =
                 '        <div class="flipper">\n' +
-                '            <div class="f">' +
+                '            <div class="f"><p>' +
                 card.sign +
-                "</div>\n" +
-                '            <div class="b"></div>\n' +
+                "</p></div>\n" +
+                '            <div class="b"><p>&nbsp;</p></div>\n' +
                 "        </div>\n";
             gameElement.appendChild(newCardElement);
         });

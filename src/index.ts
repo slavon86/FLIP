@@ -33,7 +33,7 @@ const cards: Card[] = generateRandomPairs(signs, difficultyOfGame, true).map(
         const result = new Card();
         result.sign = sign;
         result.inGame = true;
-        result.isFlipped = true;
+        result.isFlipped = Math.random() > 0.8;
         return result;
     }
 );

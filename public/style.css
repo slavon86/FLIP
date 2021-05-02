@@ -4,79 +4,90 @@
 }
 
 body {
-    background: #414141;
+    background: var(--background-color);
+}
+
+.theme-1 {
+    --background-color: #F8EDE3;
+    --background-card-front-color: #BDD2B6;
+    --background-card-back-color: #A2B29F;
+    --text-color: #575b5b;
+}
+
+.theme-2  {
+    --background-color: #9dd9d2;
+    --background-card-front-color: #ff8811;
+    --background-card-back-color: #f4d06f;
+    --text-color: #fff8f0;
+}
+
+.theme-3  {
+    --background-color: #575366;
+    --background-card-front-color: #5762d5;
+    --background-card-back-color: #6e7dab;
+    --text-color: #d1e3dd;
 }
 
 .game {
     padding: 20px;
     box-sizing: border-box;
-    height: 100%;
+    height: 100vh;
     width: 100%;
 }
 
 .progress {
     height: 40px;
     width: 100%;
-    display: block;
 }
 
 .left {
     float: right;
     height: 20px;
     width: 50%;
-    background: #9f4545;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%), var(--background-card-back-color);
     border-radius: 10px;
 }
 
 .field {
-    height: 100%;
+    height: calc(100% - 40px);
     width: 100%;
     display: grid;
-
     grid-gap: 10px;
+}
+
+
+.field .f, .field .b  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .field.easy {
     grid-template-columns: repeat(4, 1fr);
 }
 
-.field.easy .card .flipper .f {
-    font-size: 1000%;
-    height: 200px;
-}
-
-.field.easy .card .flipper .b {
-    height: 200px;
+.field.easy .f, .field.easy .b  {
+    font-size: 10vh;
 }
 
 .field.medium {
     grid-template-columns: repeat(6, 1fr);
 }
 
-.field.medium .card .flipper .f {
-    font-size: 650%;
-    height: 130px;
-}
-
-.field.medium .card .flipper .b {
-    height: 130px;
+.field.medium .f, .field.medium .b  {
+    font-size: 8vh;
 }
 
 .field.hard {
     grid-template-columns: repeat(8, 1fr);
 }
 
-.field.hard .card .flipper .f {
-    font-size: 450%;
-    height: 100px;
-}
-
-.field.hard .card .flipper .b {
-    height: 100px;
+.field.hard .f, .field.hard .b  {
+    font-size: 6vh;
 }
 
 .card {
-
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .flipper {
@@ -85,31 +96,33 @@ body {
 }
 
 .b, .f {
-    height: 130px;
+    height: 100%;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 1vh;
 }
 
 .b {
-    display: block;
-    background: #345a5a;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%), var(--background-card-back-color);
 }
 
 .f {
-    display: none;
     text-align: center;
-    color: #b4bebe;
-    background: #9f4545;
+    color: var(--text-color);
+    background: linear-gradient(0deg, var(--background-card-front-color), var(--background-card-front-color)), linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
 }
 
 .card.active .flipper .b {
     display: none;
 }
 
-.card.active .flipper .f {
-    display: block;
+.card:not(.active) .flipper .f {
+    display: none;
 }
 
 .card.out {
     visibility: hidden;
+}
+
+.card p {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
