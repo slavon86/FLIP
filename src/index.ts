@@ -1,4 +1,4 @@
-import { renderCards } from "./render";
+import { renderCards, renderStartScreen } from "./render";
 import { Card } from "./state";
 import { shuffleOfArray } from "./helpers";
 
@@ -38,8 +38,13 @@ const cards: Card[] = generateRandomPairs(signs, difficultyOfGame, true).map(
     }
 );
 
+// document.onreadystatechange = function () {
+//     if (document.readyState === "complete") {
+//         renderCards(cards, difficultyOfGame);
+//     }
+// };
 document.onreadystatechange = function () {
     if (document.readyState === "complete") {
-        renderCards(cards, difficultyOfGame);
+        renderStartScreen();
     }
 };
