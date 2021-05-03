@@ -28,12 +28,46 @@ export class State {
         this.difficulty = d;
         const N = settings[d].size;
         const T = settings[d].time;
-        const signs = "☽☂☏☆☀☁☃☺1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
-        this.cards = generateRandomPairs(signs, d, true).map((sign) => {
+        const emodji = [
+            "🧠",
+            "😀",
+            "😵",
+            "😎",
+            "😱",
+            "😈",
+            "🤖",
+            "👽",
+            "🎃",
+            "👊",
+            "👍",
+            "👎",
+            "👈",
+            "👉",
+            "👆",
+            "👇",
+            "🖖",
+            "🦾",
+            "💪",
+            "👁",
+            "👂",
+            "🦶",
+            "🦷",
+            "☂",
+            "🌂",
+            "👓",
+            "🥽",
+            "💼",
+            "🎒",
+            "⛑",
+            "👞",
+            "👠",
+            "👑",
+        ];
+        this.cards = generateRandomPairs(emodji, d, true).map((sign) => {
             const result = new Card();
             result.sign = sign;
             result.inGame = true;
-            result.isFlipped = false;
+            result.isFlipped = Math.random() > 0.8;
             return result;
         });
         renderCards(this.cards, this.difficulty);
@@ -82,7 +116,7 @@ const settings = {
 };
 
 function generateRandomPairs(
-    inputSigns: string,
+    inputSigns: Array<string>,
     difficulty?: GameDifficulty,
     shuffleInput?: boolean
 ): Array<string> {
@@ -96,7 +130,7 @@ function generateRandomPairs(
     if (inputSigns.length < numberOfPairs) {
         throw "Incorrect string of signs or number of pairs";
     }
-    let outputSigns = inputSigns.split("");
+    let outputSigns = inputSigns.map((value) => value);
     if (shuffleInput === true) {
         outputSigns = shuffleOfArray(outputSigns);
     }
