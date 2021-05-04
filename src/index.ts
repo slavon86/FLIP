@@ -1,7 +1,4 @@
-import { Renderer } from "./render";
-import { Card, State } from "./state";
-import { shuffleOfArray } from "./helpers";
-import { GameDifficulty } from "./state";
+import { State } from "./state";
 
 document.onreadystatechange = function () {
     if (document.readyState === "complete") {

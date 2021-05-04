@@ -1,12 +1,10 @@
-import { Card, State } from "./state";
-import { GameDifficulty } from "./state";
+import { Card } from "./state";
+import { GameDifficulty } from "./helpers";
 
-type Function = { (d: GameDifficulty): void };
+type StartCallbackFunction = (d: GameDifficulty) => void;
 
 export class Renderer {
-    callbackForStartButton = function (d: GameDifficulty) {
-        return;
-    };
+    callbackForStartButton: StartCallbackFunction | undefined = undefined;
 
     renderCards(cards: Card[], difficulty?: GameDifficulty): void {
         const startScreenElement = document.body.querySelector(".start-screen");
@@ -61,25 +59,65 @@ export class Renderer {
         }
         const startButtonElement = document.body.querySelector(".button");
         if (startButtonElement !== null) {
-            startButtonElement.addEventListener("click", this.onStart);
+            startButtonElement.addEventListener(
+                "click",
+                this.onStart.bind(this)
+            );
+        }
+        const themeFormElement = document.body.querySelector(
+            'form[name="theme"]'
+        );
+        if (themeFormElement !== null) {
+            console.log(
+                'themeFormElement.addEventListener("change", this.onChangeTheme);'
+            );
+            themeFormElement.addEventListener("change", this.onChangeTheme);
         }
     }
 
-    changeTheme(value: string): void {
+    private onChangeTheme(): void {
         const bodyElement = document.body;
-        if (value === undefined) {
-            value = "theme-1";
-        }
-        if (bodyElement !== null) {
-            bodyElement.className = value;
+        const themeFormElementChecked = document.querySelector(
+            'input[name="theme"]:checked'
+        );
+        console.log("themeFormElementChecked ", themeFormElementChecked);
+        if (themeFormElementChecked !== null) {
+            let value = themeFormElementChecked.getAttribute("value");
+            console.log("value", value);
+            if (value === null) {
+                value = "theme-1";
+            }
+            if (bodyElement !== null) {
+                bodyElement.className = value;
+            }
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    onStartClick(callback: Function): void {
+    onStartClick(callback: StartCallbackFunction): void {
         this.callbackForStartButton = callback;
     }
+
     private onStart(): void {
-        this.callbackForStartButton(0);
+        let selectedDifficulty = GameDifficulty.Easy;
+        let d: string | null = null;
+        const difficultyFormElementChecked = document.querySelector(
+            'input[name="difficulty"]:checked'
+        );
+        if (difficultyFormElementChecked !== null) {
+            d = difficultyFormElementChecked.getAttribute("value");
+            switch (d) {
+                case "medium":
+                    selectedDifficulty = GameDifficulty.Medium;
+                    break;
+                case "hard":
+                    selectedDifficulty = GameDifficulty.Hard;
+                    break;
+                default:
+                    selectedDifficulty = GameDifficulty.Easy;
+            }
+        }
+        if (this.callbackForStartButton !== undefined) {
+            this.callbackForStartButton(selectedDifficulty);
+        }
     }
 }

@@ -1,5 +1,11 @@
 import { Renderer } from "./render";
-import { shuffleOfArray } from "./helpers";
+import {
+    shuffleOfArray,
+    GameDifficulty,
+    settings,
+    CardsState,
+    GlobalState,
+} from "./helpers";
 
 export class Card {
     sign = "";
@@ -25,6 +31,9 @@ export class State {
         this.firstCard = undefined;
         this.secondCard = undefined;
         this.renderer = new Renderer();
+        this.renderer.onStartClick((selectedDifficulty) => {
+            this.startGame(selectedDifficulty);
+        });
         this.renderer.renderStartScreen();
     }
 
@@ -86,38 +95,6 @@ class Timer {
     onProgressChange((progress: number)=>void);
 }
 */
-export enum GameDifficulty {
-    Easy,
-    Medium,
-    Hard,
-}
-
-enum CardsState {
-    NoCardsOpen,
-    OneCardOpen,
-    TwoCardsOpen,
-}
-enum GlobalState {
-    StartScreen,
-    GameInProgress,
-    GameWin,
-    GameFail,
-}
-
-const settings = {
-    0: {
-        time: 80,
-        size: 4,
-    },
-    1: {
-        time: 300,
-        size: 6,
-    },
-    2: {
-        time: 900,
-        size: 8,
-    },
-};
 
 function generateRandomPairs(
     inputSigns: Array<string>,

@@ -12,3 +12,36 @@ export function shuffleOfArray<T>(inputArr: Array<T>): Array<T> {
     }
     return arr;
 }
+
+export enum GameDifficulty {
+    Easy,
+    Medium,
+    Hard,
+}
+
+export enum CardsState {
+    NoCardsOpen,
+    OneCardOpen,
+    TwoCardsOpen,
+}
+export enum GlobalState {
+    StartScreen,
+    GameInProgress,
+    GameWin,
+    GameFail,
+}
+
+export const settings = {
+    [GameDifficulty.Easy]: {
+        time: 80,
+        size: 4,
+    },
+    [GameDifficulty.Medium]: {
+        time: 300,
+        size: 6,
+    },
+    [GameDifficulty.Hard]: {
+        time: 900,
+        size: 8,
+    },
+};
