@@ -1,4 +1,4 @@
-import { renderCards, renderStartScreen } from "./render";
+import { Renderer } from "./render";
 import { shuffleOfArray } from "./helpers";
 
 export class Card {
@@ -14,14 +14,18 @@ export class State {
     cards: Card[] = [];
     cardState: CardsState;
     globalState: GlobalState;
-    //current: number;
-    //previous: number;
+    firstCard: number | undefined;
+    secondCard: number | undefined;
     difficulty: GameDifficulty;
+    renderer: Renderer;
     constructor() {
         this.cardState = 0;
         this.globalState = 0;
         this.difficulty = 0;
-        renderStartScreen();
+        this.firstCard = undefined;
+        this.secondCard = undefined;
+        this.renderer = new Renderer();
+        this.renderer.renderStartScreen();
     }
 
     startGame(d: GameDifficulty) {
@@ -70,7 +74,7 @@ export class State {
             result.isFlipped = Math.random() > 0.8;
             return result;
         });
-        renderCards(this.cards, this.difficulty);
+        this.renderer.renderCards(this.cards, this.difficulty);
     }
 }
 /*
@@ -117,16 +121,10 @@ const settings = {
 
 function generateRandomPairs(
     inputSigns: Array<string>,
-    difficulty?: GameDifficulty,
+    difficulty: GameDifficulty,
     shuffleInput?: boolean
 ): Array<string> {
-    let numberOfPairs = 8;
-    if (difficulty === 1) {
-        numberOfPairs = 18;
-    }
-    if (difficulty === 2) {
-        numberOfPairs = 32;
-    }
+    const numberOfPairs = Math.pow(settings[difficulty].size, 2) / 2;
     if (inputSigns.length < numberOfPairs) {
         throw "Incorrect string of signs or number of pairs";
     }
