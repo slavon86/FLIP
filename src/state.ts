@@ -1,10 +1,10 @@
 import { Renderer } from "./render";
 import {
-    shuffleOfArray,
-    GameDifficulty,
-    settings,
     CardsState,
+    GameDifficulty,
+    generateRandomPairs,
     GlobalState,
+    settings,
 } from "./helpers";
 
 export class Card {
@@ -23,11 +23,47 @@ export class State {
     firstCard: number | undefined;
     secondCard: number | undefined;
     difficulty: GameDifficulty;
+    numberOfPairs: number | undefined;
+    emodji: Array<string> = [
+        "🧠",
+        "😀",
+        "😵",
+        "😎",
+        "😱",
+        "😈",
+        "🤖",
+        "👽",
+        "🎃",
+        "👊",
+        "👍",
+        "👎",
+        "👈",
+        "👉",
+        "👆",
+        "👇",
+        "🖖",
+        "🦾",
+        "💪",
+        "👁",
+        "👂",
+        "🦶",
+        "🦷",
+        "☂",
+        "🌂",
+        "👓",
+        "🥽",
+        "💼",
+        "🎒",
+        "⛑",
+        "👞",
+        "👠",
+        "👑",
+    ];
     renderer: Renderer;
     constructor() {
-        this.cardState = 0;
-        this.globalState = 0;
-        this.difficulty = 0;
+        this.cardState = CardsState.NoCardsOpen;
+        this.globalState = GlobalState.StartScreen;
+        this.difficulty = GameDifficulty.Easy;
         this.firstCard = undefined;
         this.secondCard = undefined;
         this.renderer = new Renderer();
@@ -39,51 +75,47 @@ export class State {
 
     startGame(d: GameDifficulty) {
         this.difficulty = d;
-        const N = settings[d].size;
-        const T = settings[d].time;
-        const emodji = [
-            "🧠",
-            "😀",
-            "😵",
-            "😎",
-            "😱",
-            "😈",
-            "🤖",
-            "👽",
-            "🎃",
-            "👊",
-            "👍",
-            "👎",
-            "👈",
-            "👉",
-            "👆",
-            "👇",
-            "🖖",
-            "🦾",
-            "💪",
-            "👁",
-            "👂",
-            "🦶",
-            "🦷",
-            "☂",
-            "🌂",
-            "👓",
-            "🥽",
-            "💼",
-            "🎒",
-            "⛑",
-            "👞",
-            "👠",
-            "👑",
-        ];
-        this.cards = generateRandomPairs(emodji, d, true).map((sign) => {
+        //const N = settings[d].size;
+        //const T = settings[d].time;
+        this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
+        this.cards = generateRandomPairs(
+            this.emodji,
+            this.numberOfPairs,
+            true
+        ).map((sign) => {
             const result = new Card();
             result.sign = sign;
             result.inGame = true;
-            result.isFlipped = Math.random() > 0.8;
+            result.isFlipped = false;
             return result;
         });
         this.renderer.renderCards(this.cards, this.difficulty);
+        this.globalState = GlobalState.GameInProgress;
+        this.renderer.onCardClick((cardIndex: number) => {
+            const card = this.cards[cardIndex];
+            if (card.isFlipped === true) {
+                card.isFlipped = false;
+            } else {
+                card.isFlipped = true;
+            }
+            // if (this.cardState === CardsState.NoCardsOpen) {
+            //     card.isFlipped = true;
+            //     this.firstCard = cardIndex;
+            //     this.cardState = CardsState.OneCardOpen;
+            // } else if (this.cardState === CardsState.OneCardOpen) {
+            //     //do some magic
+            //     if (card.isFlipped === true) { doNothing }
+            //     card.isFlipped = true;
+            //     this.secondCard = cardIndex;
+            //     this.cardState = CardsState.TwoCardsOpen;
+            //     // turn on timer and wait (show two flipped cards for 0.5 second)
+            //     // compare cards
+            //     // IF cards are different THEN flip back
+            //     // ELSE out from field, and remove event handler
+            // }
+            //some cards changed their state? re-render
+            this.renderer.renderCards(this.cards, this.difficulty);
+        });
     }
 }
 /*
@@ -95,21 +127,3 @@ class Timer {
     onProgressChange((progress: number)=>void);
 }
 */
-
-function generateRandomPairs(
-    inputSigns: Array<string>,
-    difficulty: GameDifficulty,
-    shuffleInput?: boolean
-): Array<string> {
-    const numberOfPairs = Math.pow(settings[difficulty].size, 2) / 2;
-    if (inputSigns.length < numberOfPairs) {
-        throw "Incorrect string of signs or number of pairs";
-    }
-    let outputSigns = inputSigns.map((value) => value);
-    if (shuffleInput === true) {
-        outputSigns = shuffleOfArray(outputSigns);
-    }
-    outputSigns = outputSigns.slice(0, numberOfPairs);
-    outputSigns = outputSigns.concat(outputSigns);
-    return shuffleOfArray(outputSigns);
-}

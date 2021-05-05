@@ -13,6 +13,23 @@ export function shuffleOfArray<T>(inputArr: Array<T>): Array<T> {
     return arr;
 }
 
+export function generateRandomPairs(
+    inputItems: Array<string>,
+    numberOfPairs: number,
+    shuffleInput?: boolean
+): Array<string> {
+    if (inputItems.length < numberOfPairs) {
+        throw "Incorrect array of items or number of pairs";
+    }
+    let outputPairs = inputItems.map((value) => value);
+    if (shuffleInput === true) {
+        outputPairs = shuffleOfArray(outputPairs);
+    }
+    outputPairs = outputPairs.slice(0, numberOfPairs);
+    outputPairs = outputPairs.concat(outputPairs);
+    return shuffleOfArray(outputPairs);
+}
+
 export enum GameDifficulty {
     Easy,
     Medium,

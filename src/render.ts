@@ -2,14 +2,15 @@ import { Card } from "./state";
 import { GameDifficulty } from "./helpers";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
+type CardCallbackFunction = (cardNumber: number) => void;
 
 export class Renderer {
     callbackForStartButton: StartCallbackFunction | undefined = undefined;
-
+    callbacksForCards: CardCallbackFunction | undefined = undefined;
     renderCards(cards: Card[], difficulty?: GameDifficulty): void {
         const startScreenElement = document.body.querySelector(".start-screen");
         if (startScreenElement !== null) {
-            startScreenElement.className += " hidden";
+            startScreenElement.className = "start-screen hidden";
         }
 
         const fieldElement = document.body.querySelector(".field");
@@ -17,16 +18,16 @@ export class Renderer {
             fieldElement.className = "field"; //make it visible
             fieldElement.textContent = ""; // clear the field
             switch (difficulty) {
-                case 1:
+                case GameDifficulty.Medium:
                     fieldElement.className += " medium";
                     break;
-                case 2:
+                case GameDifficulty.Hard:
                     fieldElement.className += " hard";
                     break;
                 default:
                     fieldElement.className += " easy";
             }
-            cards.forEach((card) => {
+            cards.forEach((card, cardNumber) => {
                 // create cards in accord with the array of cards
                 const newCardElement = document.createElement("div");
                 newCardElement.className = "card";
@@ -41,9 +42,14 @@ export class Renderer {
                     '            <div class="f"><p>' +
                     card.sign +
                     "</p></div>\n" +
-                    '            <div class="b"><p>&nbsp;</p></div>\n' +
+                    '            <div class="b"><p>😀</p></div>\n' +
                     "        </div>\n";
+                newCardElement.addEventListener(
+                    "click",
+                    this.onCard.bind(this, cardNumber)
+                );
                 fieldElement.appendChild(newCardElement);
+                //add event listener for cards, but firs delete?
             });
         }
     }
@@ -68,9 +74,6 @@ export class Renderer {
             'form[name="theme"]'
         );
         if (themeFormElement !== null) {
-            console.log(
-                'themeFormElement.addEventListener("change", this.onChangeTheme);'
-            );
             themeFormElement.addEventListener("change", this.onChangeTheme);
         }
     }
@@ -80,16 +83,12 @@ export class Renderer {
         const themeFormElementChecked = document.querySelector(
             'input[name="theme"]:checked'
         );
-        console.log("themeFormElementChecked ", themeFormElementChecked);
         if (themeFormElementChecked !== null) {
             let value = themeFormElementChecked.getAttribute("value");
-            console.log("value", value);
             if (value === null) {
                 value = "theme-1";
             }
-            if (bodyElement !== null) {
-                bodyElement.className = value;
-            }
+            bodyElement.className = value;
         }
     }
 
@@ -99,12 +98,13 @@ export class Renderer {
 
     private onStart(): void {
         let selectedDifficulty = GameDifficulty.Easy;
-        let d: string | null = null;
         const difficultyFormElementChecked = document.querySelector(
             'input[name="difficulty"]:checked'
         );
         if (difficultyFormElementChecked !== null) {
-            d = difficultyFormElementChecked.getAttribute("value");
+            const d: string | null = difficultyFormElementChecked.getAttribute(
+                "value"
+            );
             switch (d) {
                 case "medium":
                     selectedDifficulty = GameDifficulty.Medium;
@@ -113,11 +113,20 @@ export class Renderer {
                     selectedDifficulty = GameDifficulty.Hard;
                     break;
                 default:
-                    selectedDifficulty = GameDifficulty.Easy;
             }
         }
         if (this.callbackForStartButton !== undefined) {
             this.callbackForStartButton(selectedDifficulty);
+        }
+    }
+
+    onCardClick(callback: CardCallbackFunction): void {
+        this.callbacksForCards = callback;
+    }
+
+    private onCard(cardNumber: number): void {
+        if (this.callbacksForCards !== undefined) {
+            this.callbacksForCards(cardNumber);
         }
     }
 }
