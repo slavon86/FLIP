@@ -1,23 +1,17 @@
 import { Card } from "./state";
-import { GameDifficulty } from "./helpers";
+import { GameDifficulty, getElement } from "./helpers";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
 type CardCallbackFunction = (cardNumber: number) => void;
 
 export class Renderer {
+    currentPage = GamePage.StartPage;
     callbackForStartButton: StartCallbackFunction | undefined = undefined;
     callbacksForCards: CardCallbackFunction | undefined = undefined;
     renderCards(cards: Card[], difficulty: GameDifficulty): void {
-        const startScreenElement = document.body.querySelector(".start-screen");
-        if (startScreenElement === null) {
-            throw "Element with class='start-screen' not found";
-        }
-        startScreenElement.className = "start-screen hidden";
-        const fieldElement = document.body.querySelector(".field");
-        if (fieldElement === null) {
-            throw "Element with class='field' not found";
-        }
-        fieldElement.className = "field"; //make it visible
+        this.showPage(GamePage.FieldPage);
+
+        const fieldElement = getElement(".field");
         fieldElement.textContent = ""; // clear the field
         switch (difficulty) {
             case GameDifficulty.Easy:
@@ -58,38 +52,20 @@ export class Renderer {
     }
 
     renderStartScreen(): void {
-        const fieldElement = document.body.querySelector(".field");
-        if (fieldElement === null) {
-            throw "Element with class='field' not found";
-        }
-        fieldElement.classList.add("hidden");
-        const startScreenElement = document.body.querySelector(".start-screen");
-        if (startScreenElement === null) {
-            throw "Element with class='start-screen' not found";
-        }
-        startScreenElement.className = "start-screen"; //make it visible
-        const startButtonElement = document.body.querySelector(".button");
-        if (startButtonElement === null) {
-            throw "Element with class='button' not found";
-        }
+        this.showPage(GamePage.StartPage);
+
+        const startButtonElement = getElement(".button");
         startButtonElement.addEventListener("click", this.onStart.bind(this));
-        const themeFormElement = document.body.querySelector(
-            'form[name="theme"]'
-        );
-        if (themeFormElement === null) {
-            throw "Element 'form' with name='theme' not found";
-        }
+
+        const themeFormElement = getElement('form[name="theme"]');
         themeFormElement.addEventListener("change", this.onChangeTheme);
     }
 
     private onChangeTheme(): void {
         const bodyElement = document.body;
-        const themeFormElementChecked = document.querySelector(
+        const themeFormElementChecked = getElement(
             'input[name="theme"]:checked'
         );
-        if (themeFormElementChecked === null) {
-            throw "Checked tag 'input' not found";
-        }
         const value = themeFormElementChecked.getAttribute("value");
         if (value === null) {
             throw "Error value of themeFormElementChecked is null";
@@ -109,12 +85,9 @@ export class Renderer {
     }
 
     private readDifficulty(): GameDifficulty {
-        const difficultyFormElementChecked = document.querySelector(
+        const difficultyFormElementChecked = getElement(
             'input[name="difficulty"]:checked'
         );
-        if (difficultyFormElementChecked === null) {
-            throw "Checked tag <input> not found";
-        }
         const d = difficultyFormElementChecked.getAttribute("value");
         switch (d) {
             case "easy":
@@ -138,4 +111,40 @@ export class Renderer {
         }
         this.callbacksForCards(cardNumber);
     }
+
+    private showPage(page: GamePage): void {
+        // if (this.currentPage === page) {
+        //     return; // nothing to do
+        // }
+        const fieldElement = getElement(".field");
+        const startScreenElement = getElement(".start-screen");
+        // show needed page code
+        switch (page) {
+            case GamePage.StartPage:
+                {
+                    fieldElement.classList.add("hidden");
+                    startScreenElement.classList.remove("hidden"); //make it visible
+                }
+                break;
+            case GamePage.FieldPage:
+                {
+                    startScreenElement.classList.add("hidden");
+                    fieldElement.classList.remove("hidden"); // make it visible
+                }
+                break;
+            case GamePage.GameOverPage:
+                {
+                }
+                break;
+            default:
+                throw "showPage: 'Incorrect page:GamePage'";
+        }
+        this.currentPage = page; // remember current page
+    }
+}
+
+enum GamePage {
+    StartPage,
+    FieldPage,
+    GameOverPage,
 }

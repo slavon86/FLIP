@@ -30,6 +30,15 @@ export function generateRandomPairs(
     return shuffleOfArray(outputPairs);
 }
 
+export function getElement(selector: string) {
+    const el = document.querySelector(selector);
+    if (el === null) {
+        throw new Error(`Can't find element '${selector}'.`);
+    }
+
+    return el;
+}
+
 export enum GameDifficulty {
     Easy,
     Medium,
