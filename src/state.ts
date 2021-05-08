@@ -18,14 +18,14 @@ export class Card {
 
 export class State {
     cards: Card[] = [];
-    cardState: CardsState;
+    private cardState: CardsState;
     globalState: GlobalState;
-    firstCard = 0;
-    secondCard = 0;
+    private firstCard = 0;
+    private secondCard = 0;
     difficulty: GameDifficulty;
-    numberOfPairs: number | undefined;
-    count = 0;
-    emodji: Array<string> = [
+    private numberOfPairs: number | undefined;
+    private count = 0;
+    private emodji: Array<string> = [
         "🧠",
         "😀",
         "😵",
@@ -60,7 +60,7 @@ export class State {
         "👠",
         "👑",
     ];
-    renderer: Renderer;
+    private renderer: Renderer;
     constructor() {
         this.cardState = CardsState.NoCardsOpen;
         this.globalState = GlobalState.StartScreen;
@@ -69,10 +69,10 @@ export class State {
         this.renderer.onStartClick((selectedDifficulty) => {
             this.startGame(selectedDifficulty);
         });
-        this.renderer.renderStartScreen();
+        this.renderer.render(this);
     }
 
-    startGame(d: GameDifficulty) {
+    private startGame(d: GameDifficulty) {
         this.difficulty = d;
         this.count = 0;
         this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
@@ -88,11 +88,7 @@ export class State {
             return result;
         });
         this.globalState = GlobalState.InitGame;
-        this.renderer.renderCards(
-            this.cards,
-            this.difficulty,
-            this.globalState
-        );
+        this.renderer.render(this);
         this.globalState = GlobalState.GameInProgress;
         this.renderer.onCardClick((cardIndex: number) => {
             const card = this.cards[cardIndex];
@@ -122,18 +118,10 @@ export class State {
                         this.cards[this.secondCard].isFlipped = false;
                     }
                     this.cardState = CardsState.NoCardsOpen;
-                    this.renderer.renderCards(
-                        this.cards,
-                        this.difficulty,
-                        this.globalState
-                    );
+                    this.renderer.render(this);
                 }, 500);
             }
-            this.renderer.renderCards(
-                this.cards,
-                this.difficulty,
-                this.globalState
-            );
+            this.renderer.render(this);
         });
     }
 }

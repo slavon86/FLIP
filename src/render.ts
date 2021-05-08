@@ -1,4 +1,4 @@
-import { Card } from "./state";
+import { Card, State } from "./state";
 import { GameDifficulty, getElement, GlobalState } from "./helpers";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
@@ -8,20 +8,26 @@ export class Renderer {
     currentPage = GamePage.NotInit;
     callbackForStartButton: StartCallbackFunction | undefined = undefined;
     callbacksForCards: CardCallbackFunction | undefined = undefined;
-    renderCards(
-        cards: Card[],
-        difficulty: GameDifficulty,
-        globalState: GlobalState
-    ): void {
-        if (globalState === GlobalState.GameWin) {
+    render(state: State): void {
+        if (state.globalState === GlobalState.StartScreen) {
             this.renderStartScreen();
             return;
         }
+
+        if (state.globalState === GlobalState.GameWin) {
+            this.renderStartScreen();
+            return;
+        }
+
         this.showPage(GamePage.FieldPage);
+        if (state.globalState === GlobalState.GameInProgress) {
+            this.updateOnlyClassOfCards(state);
+            return;
+        }
 
         const fieldElement = getElement(".field");
         fieldElement.textContent = ""; // clear the field
-        switch (difficulty) {
+        switch (state.difficulty) {
             case GameDifficulty.Easy:
                 fieldElement.classList.add("easy");
                 break;
@@ -34,7 +40,7 @@ export class Renderer {
             default:
                 throw "Incorrect difficulty of the game";
         }
-        cards.forEach((card, cardNumber) => {
+        state.cards.forEach((card, cardNumber) => {
             // create cards in accord with the array of cards
             const newCardElement = document.createElement("div");
             newCardElement.className = "card";
@@ -59,7 +65,25 @@ export class Renderer {
         });
     }
 
-    renderStartScreen(): void {
+    private updateOnlyClassOfCards(state: State): void {
+        const fieldElement = getElement(".field");
+        const listOfCardsElements = fieldElement.querySelectorAll(".card");
+        if (listOfCardsElements == null) {
+            throw new Error("Can't find elements '.card'.");
+        }
+        state.cards.forEach((card, cardNumber) => {
+            if (card.isFlipped === true) {
+                listOfCardsElements.item(cardNumber).classList.add("active");
+            } else {
+                listOfCardsElements.item(cardNumber).classList.remove("active");
+            }
+            if (card.inGame === false) {
+                listOfCardsElements.item(cardNumber).classList.add("out");
+            }
+        });
+    }
+
+    private renderStartScreen(): void {
         this.showPage(GamePage.StartPage);
 
         const startButtonElement = getElement(".button");
@@ -121,9 +145,9 @@ export class Renderer {
     }
 
     private showPage(page: GamePage): void {
-        // if (this.currentPage === page) {
-        //     return; // nothing to do
-        // }
+        if (this.currentPage === page) {
+            return; // nothing to do
+        }
         const fieldElement = getElement(".field");
         const startScreenElement = getElement(".start-screen");
         // show needed page code
