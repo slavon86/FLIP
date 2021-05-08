@@ -52,6 +52,7 @@ export enum CardsState {
 }
 export enum GlobalState {
     StartScreen,
+    InitGame,
     GameInProgress,
     GameWin,
     GameFail,

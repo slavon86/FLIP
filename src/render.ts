@@ -1,14 +1,22 @@
 import { Card } from "./state";
-import { GameDifficulty, getElement } from "./helpers";
+import { GameDifficulty, getElement, GlobalState } from "./helpers";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
 type CardCallbackFunction = (cardNumber: number) => void;
 
 export class Renderer {
-    currentPage = GamePage.StartPage;
+    currentPage = GamePage.NotInit;
     callbackForStartButton: StartCallbackFunction | undefined = undefined;
     callbacksForCards: CardCallbackFunction | undefined = undefined;
-    renderCards(cards: Card[], difficulty: GameDifficulty): void {
+    renderCards(
+        cards: Card[],
+        difficulty: GameDifficulty,
+        globalState: GlobalState
+    ): void {
+        if (globalState === GlobalState.GameWin) {
+            this.renderStartScreen();
+            return;
+        }
         this.showPage(GamePage.FieldPage);
 
         const fieldElement = getElement(".field");
@@ -132,10 +140,6 @@ export class Renderer {
                     fieldElement.classList.remove("hidden"); // make it visible
                 }
                 break;
-            case GamePage.GameOverPage:
-                {
-                }
-                break;
             default:
                 throw "showPage: 'Incorrect page:GamePage'";
         }
@@ -144,7 +148,8 @@ export class Renderer {
 }
 
 enum GamePage {
+    NotInit,
     StartPage,
     FieldPage,
-    GameOverPage,
+    // GameOverPage,
 }

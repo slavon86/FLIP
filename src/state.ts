@@ -20,10 +20,11 @@ export class State {
     cards: Card[] = [];
     cardState: CardsState;
     globalState: GlobalState;
-    firstCard: number | undefined;
-    secondCard: number | undefined;
+    firstCard = 0;
+    secondCard = 0;
     difficulty: GameDifficulty;
     numberOfPairs: number | undefined;
+    count = 0;
     emodji: Array<string> = [
         "🧠",
         "😀",
@@ -64,8 +65,6 @@ export class State {
         this.cardState = CardsState.NoCardsOpen;
         this.globalState = GlobalState.StartScreen;
         this.difficulty = GameDifficulty.Easy;
-        this.firstCard = undefined;
-        this.secondCard = undefined;
         this.renderer = new Renderer();
         this.renderer.onStartClick((selectedDifficulty) => {
             this.startGame(selectedDifficulty);
@@ -75,8 +74,7 @@ export class State {
 
     startGame(d: GameDifficulty) {
         this.difficulty = d;
-        //const N = settings[d].size;
-        //const T = settings[d].time;
+        this.count = 0;
         this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
         this.cards = generateRandomPairs(
             this.emodji,
@@ -89,32 +87,53 @@ export class State {
             result.isFlipped = false;
             return result;
         });
-        this.renderer.renderCards(this.cards, this.difficulty);
+        this.globalState = GlobalState.InitGame;
+        this.renderer.renderCards(
+            this.cards,
+            this.difficulty,
+            this.globalState
+        );
         this.globalState = GlobalState.GameInProgress;
         this.renderer.onCardClick((cardIndex: number) => {
             const card = this.cards[cardIndex];
-            if (card.isFlipped === true) {
-                card.isFlipped = false;
-            } else {
+            if (this.cardState === CardsState.NoCardsOpen) {
                 card.isFlipped = true;
+                this.firstCard = cardIndex;
+                this.cardState = CardsState.OneCardOpen;
+            } else if (this.cardState === CardsState.OneCardOpen) {
+                //do some magic
+                card.isFlipped = true;
+                this.secondCard = cardIndex;
+                this.cardState = CardsState.TwoCardsOpen;
+                setTimeout(() => {
+                    if (
+                        this.cards[this.firstCard].isEqual(
+                            this.cards[this.secondCard]
+                        )
+                    ) {
+                        this.cards[this.firstCard].inGame = false;
+                        this.cards[this.secondCard].inGame = false;
+                        this.count++;
+                        if (this.count === this.numberOfPairs) {
+                            this.globalState = GlobalState.GameWin;
+                        }
+                    } else {
+                        this.cards[this.firstCard].isFlipped = false;
+                        this.cards[this.secondCard].isFlipped = false;
+                    }
+                    this.cardState = CardsState.NoCardsOpen;
+                    this.renderer.renderCards(
+                        this.cards,
+                        this.difficulty,
+                        this.globalState
+                    );
+                }, 500);
             }
-            // if (this.cardState === CardsState.NoCardsOpen) {
-            //     card.isFlipped = true;
-            //     this.firstCard = cardIndex;
-            //     this.cardState = CardsState.OneCardOpen;
-            // } else if (this.cardState === CardsState.OneCardOpen) {
-            //     //do some magic
-            //     if (card.isFlipped === true) { doNothing }
-            //     card.isFlipped = true;
-            //     this.secondCard = cardIndex;
-            //     this.cardState = CardsState.TwoCardsOpen;
-            //     // turn on timer and wait (show two flipped cards for 0.5 second)
-            //     // compare cards
-            //     // IF cards are different THEN flip back
-            //     // ELSE out from field, and remove event handler
-            // }
-            //some cards changed their state? re-render
-            this.renderer.renderCards(this.cards, this.difficulty);
+            this.renderer.renderCards(
+                this.cards,
+                this.difficulty,
+                this.globalState
+            );
         });
     }
 }
