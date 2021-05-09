@@ -103,13 +103,10 @@ export class State {
         this.globalState = GlobalState.GameInProgress;
         this.timer = new Timer(settings[this.difficulty].time);
         this.timer.onTimeout(() => {
-            this.globalState = GlobalState.GameFail;
-            this.timer.stop();
-            this.renderer.render(this);
+            this.processTimeout();
         });
         this.timer.onProgressChange((progress) => {
-            this.timeProgress = progress; //this.timeProgress is not used
-            this.renderer.renderProgressBar(progress); //not page, only progress bar
+            this.processProgressChange(progress);
         });
         this.timer.start();
     }
@@ -138,7 +135,7 @@ export class State {
                     this.cards[this.secondCard].inGame = false;
                     this.count++;
                     if (this.count === this.numberOfPairs) {
-                        this.stopGame();
+                        this.timer.stop();
                         this.globalState = GlobalState.GameWin;
                     }
                 } else {
@@ -153,7 +150,13 @@ export class State {
         this.renderer.render(this);
     }
 
-    private stopGame() {
+    private processProgressChange(progress: number) {
+        this.timeProgress = progress; //this.timeProgress is not used
+        this.renderer.renderProgressBar(progress); //not page, only progress bar
+    }
+    private processTimeout() {
+        this.globalState = GlobalState.GameFail;
         this.timer.stop();
+        this.renderer.render(this);
     }
 }
