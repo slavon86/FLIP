@@ -15,7 +15,12 @@ export class Renderer {
         }
 
         if (state.globalState === GlobalState.GameWin) {
-            this.showPage(GamePage.StartPage);
+            this.showPage(GamePage.GameWinPage);
+            return;
+        }
+
+        if (state.globalState === GlobalState.GameFail) {
+            this.showPage(GamePage.GameFailPage);
             return;
         }
 
@@ -30,12 +35,18 @@ export class Renderer {
         switch (state.difficulty) {
             case GameDifficulty.Easy:
                 fieldElement.classList.add("easy");
+                fieldElement.classList.remove("medium");
+                fieldElement.classList.remove("hard");
                 break;
             case GameDifficulty.Medium:
                 fieldElement.classList.add("medium");
+                fieldElement.classList.remove("easy");
+                fieldElement.classList.remove("hard");
                 break;
             case GameDifficulty.Hard:
                 fieldElement.classList.add("hard");
+                fieldElement.classList.remove("easy");
+                fieldElement.classList.remove("medium");
                 break;
             default:
                 throw "Incorrect difficulty of the game";
@@ -150,18 +161,37 @@ export class Renderer {
         }
         const fieldElement = getElement(".field");
         const startScreenElement = getElement(".start-screen");
-        // show needed page code
+        const winElement = getElement(".win");
+        const failElement = getElement(".fail");
         switch (page) {
             case GamePage.StartPage:
                 {
                     fieldElement.classList.add("hidden");
-                    startScreenElement.classList.remove("hidden"); //make it visible
+                    startScreenElement.classList.remove("hidden");
                 }
                 break;
+            case GamePage.GameWinPage:
+                {
+                    fieldElement.classList.add("hidden");
+                    startScreenElement.classList.remove("hidden");
+                    failElement.classList.add("hidden");
+                    winElement.classList.remove("hidden");
+                }
+                break;
+
+            case GamePage.GameFailPage:
+                {
+                    fieldElement.classList.add("hidden");
+                    startScreenElement.classList.remove("hidden");
+                    failElement.classList.remove("hidden");
+                    winElement.classList.add("hidden");
+                }
+                break;
+
             case GamePage.FieldPage:
                 {
                     startScreenElement.classList.add("hidden");
-                    fieldElement.classList.remove("hidden"); // make it visible
+                    fieldElement.classList.remove("hidden");
                 }
                 break;
             default:
@@ -172,7 +202,7 @@ export class Renderer {
 
     renderProgressBar(progress: number): void {
         const progressElement = getElement(".left");
-        progressElement.setAttribute("width", `${progress}%`);
+        progressElement.setAttribute("width", progress.toString() + "%"); //do not work
     }
 }
 
@@ -180,5 +210,6 @@ enum GamePage {
     NotInit,
     StartPage,
     FieldPage,
-    // GameOverPage,
+    GameWinPage,
+    GameFailPage,
 }

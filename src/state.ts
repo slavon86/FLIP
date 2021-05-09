@@ -21,6 +21,7 @@ export class State {
     cards: Card[] = [];
     private cardState: CardsState;
     globalState: GlobalState;
+    private previousCard: number;
     private firstCard = 0;
     private secondCard = 0;
     difficulty: GameDifficulty;
@@ -63,10 +64,13 @@ export class State {
     ];
     private renderer: Renderer;
     private timer: Timer;
+    timeProgress: number;
     constructor() {
         this.cardState = CardsState.NoCardsOpen;
         this.globalState = GlobalState.StartScreen;
         this.difficulty = GameDifficulty.Easy;
+        this.timeProgress = 100;
+        this.previousCard = -1;
         this.renderer = new Renderer();
 
         this.renderer.onStartClick((selectedDifficulty) => {
@@ -96,12 +100,25 @@ export class State {
         });
         this.globalState = GlobalState.InitGame;
         this.renderer.render(this);
-        this.timer = new Timer(settings[this.difficulty].time);
         this.globalState = GlobalState.GameInProgress;
+        this.timer = new Timer(settings[this.difficulty].time);
+        this.timer.onTimeout(() => {
+            this.globalState = GlobalState.GameFail;
+            this.timer.stop();
+            this.renderer.render(this);
+        });
+        this.timer.onProgressChange((progress) => {
+            this.timeProgress = progress; //this.timeProgress is not used
+            this.renderer.renderProgressBar(progress); //not page, only progress bar
+        });
         this.timer.start();
     }
 
     private processClick(cardIndex: number) {
+        if (cardIndex === this.previousCard) {
+            return;
+        }
+        this.previousCard = cardIndex;
         const card = this.cards[cardIndex];
         if (this.cardState === CardsState.NoCardsOpen) {
             card.isFlipped = true;
@@ -121,17 +138,22 @@ export class State {
                     this.cards[this.secondCard].inGame = false;
                     this.count++;
                     if (this.count === this.numberOfPairs) {
-                        this.timer.stop();
+                        this.stopGame();
                         this.globalState = GlobalState.GameWin;
                     }
                 } else {
                     this.cards[this.firstCard].isFlipped = false;
                     this.cards[this.secondCard].isFlipped = false;
+                    this.previousCard = -1;
                 }
                 this.cardState = CardsState.NoCardsOpen;
                 this.renderer.render(this);
             }, 300);
         }
         this.renderer.render(this);
+    }
+
+    private stopGame() {
+        this.timer.stop();
     }
 }

@@ -1,44 +1,60 @@
+type TimeoutCallbackFunction = () => void;
+type ProgressChangeCallbackFunction = (progress: number) => void;
+
 export class Timer {
     private progress: number; // 0-100
     private period: number;
     private isStop: boolean;
+    private timeoutCallback: TimeoutCallbackFunction | undefined = undefined;
+    private progressChangeCallback:
+        | ProgressChangeCallbackFunction
+        | undefined = undefined;
     constructor(timeSec: number) {
         this.progress = 100;
-        this.period = timeSec;
+        this.period = timeSec * 10;
         this.isStop = false;
     }
 
     start(): void {
         setTimeout(() => {
-            this.onProgressChange();
+            this.progressChange();
         }, this.period);
     }
 
     stop(): void {
-        // call in state if game win
         this.isStop = true;
     }
 
-    onTimeout(): void {
-        console.log("Time out");
-        this.stop();
-        //set  state.globalState = GlobalState.GameFail
-        //call render
+    onTimeout(callback: TimeoutCallbackFunction): void {
+        this.timeoutCallback = callback;
     }
 
-    onProgressChange(): void {
+    onProgressChange(callback: ProgressChangeCallbackFunction): void {
+        this.progressChangeCallback = callback;
+    }
+
+    private progressChange(): void {
         if (this.isStop === true) {
             return;
         }
-        this.progress = this.progress - 0.1;
-        //call render progress-bar
-        console.log("Progress bar - 1");
+        this.progress--;
+        if (this.progressChangeCallback === undefined) {
+            throw new Error(
+                "Error in progressChange(): this.progressChangeCallback === undefined."
+            );
+        }
+        this.progressChangeCallback(this.progress);
         if (this.progress <= 0) {
-            this.onTimeout();
+            if (this.timeoutCallback === undefined) {
+                throw new Error(
+                    "Error in progressChange(): this.timeoutCallback === undefined."
+                );
+            }
+            this.timeoutCallback();
             return;
         }
         setTimeout(() => {
-            this.onProgressChange();
+            this.progressChange();
         }, this.period);
     }
 }
