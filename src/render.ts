@@ -15,7 +15,7 @@ export class Renderer {
         }
 
         if (state.globalState === GlobalState.GameWin) {
-            this.renderStartScreen();
+            this.showPage(GamePage.StartPage);
             return;
         }
 
@@ -168,6 +168,11 @@ export class Renderer {
                 throw "showPage: 'Incorrect page:GamePage'";
         }
         this.currentPage = page; // remember current page
+    }
+
+    renderProgressBar(progress: number): void {
+        const progressElement = getElement(".left");
+        progressElement.setAttribute("width", `${progress}%`);
     }
 }
 

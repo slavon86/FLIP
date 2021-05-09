@@ -1,3 +1,48 @@
+export class Timer {
+    private progress: number; // 0-100
+    private period: number;
+    private isStop: boolean;
+    constructor(timeSec: number) {
+        this.progress = 100;
+        this.period = timeSec;
+        this.isStop = false;
+    }
+
+    start(): void {
+        setTimeout(() => {
+            this.onProgressChange();
+        }, this.period);
+    }
+
+    stop(): void {
+        // call in state if game win
+        this.isStop = true;
+    }
+
+    onTimeout(): void {
+        console.log("Time out");
+        this.stop();
+        //set  state.globalState = GlobalState.GameFail
+        //call render
+    }
+
+    onProgressChange(): void {
+        if (this.isStop === true) {
+            return;
+        }
+        this.progress = this.progress - 0.1;
+        //call render progress-bar
+        console.log("Progress bar - 1");
+        if (this.progress <= 0) {
+            this.onTimeout();
+            return;
+        }
+        setTimeout(() => {
+            this.onProgressChange();
+        }, this.period);
+    }
+}
+
 function getRandomInt(max: number): number {
     return Math.floor(Math.random() * (max + 1));
 }
