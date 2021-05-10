@@ -145,7 +145,7 @@ export class State {
                 }
                 this.cardState = CardsState.NoCardsOpen;
                 this.renderer.render(this);
-            }, 300);
+            }, 500);
         }
         this.renderer.render(this);
     }

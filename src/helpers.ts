@@ -120,15 +120,15 @@ export enum GlobalState {
 
 export const settings = {
     [GameDifficulty.Easy]: {
-        time: 60,
+        time: 32,
         size: 4,
     },
     [GameDifficulty.Medium]: {
-        time: 300,
+        time: 90,
         size: 6,
     },
     [GameDifficulty.Hard]: {
-        time: 900,
+        time: 192,
         size: 8,
     },
 };

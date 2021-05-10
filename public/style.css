@@ -99,18 +99,26 @@ body {
 }
 
 .card {
+    height: 100%;
+    width: 100%;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    perspective: 3000px;
 }
 
 .flipper {
     height: 100%;
     width: 100%;
+    transform-style: preserve-3d;
+    transition: 0.3s;
+
 }
 
 .b, .f {
     height: 100%;
     width: 100%;
     border-radius: 1vh;
+    position: absolute;
+    backface-visibility: hidden;
 }
 
 .b {
@@ -121,14 +129,17 @@ body {
     text-align: center;
     color: var(--text-color);
     background: linear-gradient(0deg, var(--background-card-front-color), var(--background-card-front-color)), linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+    transform: rotateY(180deg);
+    /*z-index: 2;*/
 }
 
-.card.active .flipper .b {
-    display: none;
+.card.active .flipper {
+    /*display: none;*/
+    transform: rotateY(180deg);
 }
 
 .card:not(.active) .flipper .f {
-    display: none;
+    /*display: none;*/
 }
 
 .card.out {
