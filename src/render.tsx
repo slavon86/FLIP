@@ -1,5 +1,7 @@
 import { Card, State } from "./state";
 import { GameDifficulty, getElement, GlobalState } from "./helpers";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
 type CardCallbackFunction = (cardNumber: number) => void;
@@ -10,74 +12,83 @@ export class Renderer {
     callbacksForCards: CardCallbackFunction | undefined = undefined;
     progressElement: HTMLDivElement | null = null;
     render(state: State): void {
-        if (state.globalState === GlobalState.StartScreen) {
-            this.renderStartScreen();
-            return;
-        }
-
-        if (state.globalState === GlobalState.GameWin) {
-            this.showPage(GamePage.GameWinPage);
-            return;
-        }
-
-        if (state.globalState === GlobalState.GameFail) {
-            this.showPage(GamePage.GameFailPage);
-            return;
-        }
-
-        this.showPage(GamePage.FieldPage);
-        if (state.globalState === GlobalState.GameInProgress) {
-            this.updateOnlyClassOfCards(state);
-            return;
-        }
-
-        const fieldElement = getElement(".field");
-        fieldElement.textContent = ""; // clear the field
-        switch (state.difficulty) {
-            case GameDifficulty.Easy:
-                fieldElement.classList.add("easy");
-                fieldElement.classList.remove("medium");
-                fieldElement.classList.remove("hard");
-                break;
-            case GameDifficulty.Medium:
-                fieldElement.classList.add("medium");
-                fieldElement.classList.remove("easy");
-                fieldElement.classList.remove("hard");
-                break;
-            case GameDifficulty.Hard:
-                fieldElement.classList.add("hard");
-                fieldElement.classList.remove("easy");
-                fieldElement.classList.remove("medium");
-                break;
-            default:
-                throw "Incorrect difficulty of the game";
-        }
-        state.cards.forEach((card, cardNumber) => {
-            // create cards in accord with the array of cards
-            const newCardElement = document.createElement("div");
-            newCardElement.className = "card";
-            if (card.isFlipped === true) {
-                newCardElement.classList.add("active");
-            }
-            if (card.inGame === false) {
-                newCardElement.classList.add("out");
-            }
-            newCardElement.innerHTML =
-                '        <div class="flipper">\n' +
-                '            <div class="f"><p>' +
-                card.sign +
-                "</p></div>\n" +
-                '            <div class="b"><p>😀</p></div>\n' +
-                "        </div>\n";
-            newCardElement.addEventListener(
-                "click",
-                this.onCard.bind(this, cardNumber)
-            );
-            fieldElement.appendChild(newCardElement);
-        });
-
-        this.progressElement = document.querySelector(".left");
+        ReactDOM.render(
+            <div>
+                <h1>Hello, Welcome to the first page</h1>
+            </div>,
+            getElement(".game")
+        );
     }
+
+    // render(state: State): void {
+    //     if (state.globalState === GlobalState.StartScreen) {
+    //         this.renderStartScreen();
+    //         return;
+    //     }
+    //
+    //     if (state.globalState === GlobalState.GameWin) {
+    //         this.showPage(GamePage.GameWinPage);
+    //         return;
+    //     }
+    //
+    //     if (state.globalState === GlobalState.GameFail) {
+    //         this.showPage(GamePage.GameFailPage);
+    //         return;
+    //     }
+    //
+    //     this.showPage(GamePage.FieldPage);
+    //     if (state.globalState === GlobalState.GameInProgress) {
+    //         this.updateOnlyClassOfCards(state);
+    //         return;
+    //     }
+    //
+    //     const fieldElement = getElement(".field");
+    //     fieldElement.textContent = ""; // clear the field
+    //     switch (state.difficulty) {
+    //         case GameDifficulty.Easy:
+    //             fieldElement.classList.add("easy");
+    //             fieldElement.classList.remove("medium");
+    //             fieldElement.classList.remove("hard");
+    //             break;
+    //         case GameDifficulty.Medium:
+    //             fieldElement.classList.add("medium");
+    //             fieldElement.classList.remove("easy");
+    //             fieldElement.classList.remove("hard");
+    //             break;
+    //         case GameDifficulty.Hard:
+    //             fieldElement.classList.add("hard");
+    //             fieldElement.classList.remove("easy");
+    //             fieldElement.classList.remove("medium");
+    //             break;
+    //         default:
+    //             throw "Incorrect difficulty of the game";
+    //     }
+    //     state.cards.forEach((card, cardNumber) => {
+    //         // create cards in accord with the array of cards
+    //         const newCardElement = document.createElement("div");
+    //         newCardElement.className = "card";
+    //         if (card.isFlipped === true) {
+    //             newCardElement.classList.add("active");
+    //         }
+    //         if (card.inGame === false) {
+    //             newCardElement.classList.add("out");
+    //         }
+    //         newCardElement.innerHTML =
+    //             '        <div class="flipper">\n' +
+    //             '            <div class="f"><p>' +
+    //             card.sign +
+    //             "</p></div>\n" +
+    //             '            <div class="b"><p>😀</p></div>\n' +
+    //             "        </div>\n";
+    //         newCardElement.addEventListener(
+    //             "click",
+    //             this.onCard.bind(this, cardNumber)
+    //         );
+    //         fieldElement.appendChild(newCardElement);
+    //     });
+    //
+    //     this.progressElement = document.querySelector(".left");
+    // }
 
     private updateOnlyClassOfCards(state: State): void {
         const fieldElement = getElement(".field");
