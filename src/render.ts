@@ -8,6 +8,7 @@ export class Renderer {
     currentPage = GamePage.NotInit;
     callbackForStartButton: StartCallbackFunction | undefined = undefined;
     callbacksForCards: CardCallbackFunction | undefined = undefined;
+    progressElement: HTMLDivElement | null = null;
     render(state: State): void {
         if (state.globalState === GlobalState.StartScreen) {
             this.renderStartScreen();
@@ -74,6 +75,8 @@ export class Renderer {
             );
             fieldElement.appendChild(newCardElement);
         });
+
+        this.progressElement = document.querySelector(".left");
     }
 
     private updateOnlyClassOfCards(state: State): void {
@@ -201,11 +204,10 @@ export class Renderer {
     }
 
     renderProgressBar(progress: number): void {
-        const progressElement = getElement(".left");
-        progressElement.setAttribute(
-            "style",
-            "width:" + progress.toString() + "%"
-        );
+        if (this.progressElement === null) {
+            throw new Error("Can't find element '.left'.");
+        }
+        this.progressElement.style.width = progress.toString() + "%";
     }
 }
 

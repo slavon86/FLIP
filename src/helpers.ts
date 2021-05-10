@@ -96,7 +96,6 @@ export function getElement(selector: string) {
     if (el === null) {
         throw new Error(`Can't find element '${selector}'.`);
     }
-
     return el;
 }
 
