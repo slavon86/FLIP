@@ -11,7 +11,7 @@ export class Timer {
         | undefined = undefined;
     constructor(timeSec: number) {
         this.progress = 100;
-        this.period = timeSec * 10;
+        this.period = timeSec / 10;
         this.isStop = false;
     }
 
@@ -37,7 +37,7 @@ export class Timer {
         if (this.isStop === true) {
             return;
         }
-        this.progress--;
+        this.progress = this.progress - 0.01;
         if (this.progressChangeCallback === undefined) {
             throw new Error(
                 "Error in progressChange(): this.progressChangeCallback === undefined."
@@ -121,7 +121,7 @@ export enum GlobalState {
 
 export const settings = {
     [GameDifficulty.Easy]: {
-        time: 80,
+        time: 60,
         size: 4,
     },
     [GameDifficulty.Medium]: {

@@ -202,7 +202,10 @@ export class Renderer {
 
     renderProgressBar(progress: number): void {
         const progressElement = getElement(".left");
-        progressElement.setAttribute("width", progress.toString() + "%"); //do not work
+        progressElement.setAttribute(
+            "style",
+            "width:" + progress.toString() + "%"
+        );
     }
 }
 
