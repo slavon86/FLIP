@@ -82,12 +82,13 @@ export function generateRandomPairs(
     if (inputItems.length < numberOfPairs) {
         throw "Incorrect array of items or number of pairs";
     }
-    let outputPairs = inputItems.map((value) => value);
+    let directItems = inputItems.map((value) => value);
     if (shuffleInput === true) {
-        outputPairs = shuffleOfArray(outputPairs);
+        directItems = shuffleOfArray(directItems);
     }
-    outputPairs = outputPairs.slice(0, numberOfPairs);
-    outputPairs = outputPairs.concat(outputPairs);
+    directItems = directItems.slice(0, numberOfPairs);
+    const reversedItems = directItems.reverse();
+    const outputPairs = directItems.concat(reversedItems);
     return shuffleOfArray(outputPairs);
 }
 
