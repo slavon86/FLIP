@@ -14,7 +14,7 @@ export class Renderer {
     render(state: State): void {
         ReactDOM.render(
             <div>
-                <h1>Hello, Welcome to the first page</h1>
+                <h1>Hello, Welcome to the first page, bro.</h1>
             </div>,
             getElement(".game")
         );
