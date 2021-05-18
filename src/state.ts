@@ -83,7 +83,7 @@ export class State {
         this.timer = new Timer(settings[this.difficulty].time);
     }
 
-    private startGame(d: GameDifficulty) {
+    startGame(d: GameDifficulty) {
         this.difficulty = d;
         this.count = 0;
         this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
@@ -152,11 +152,11 @@ export class State {
 
     private processProgressChange(progress: number) {
         this.timeProgress = progress; //this.timeProgress is not used
-        this.renderer.renderProgressBar(progress); //not page, only progress bar
+        //this.renderer.renderProgressBar(progress); //not page, only progress bar
     }
     private processTimeout() {
         this.globalState = GlobalState.GameFail;
         this.timer.stop();
-        this.renderer.render(this);
+        //this.renderer.render(this);
     }
 }

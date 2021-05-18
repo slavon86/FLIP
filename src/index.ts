@@ -1,10 +1,10 @@
 import { State } from "./state";
+import { GameDifficulty } from "./helpers";
 
+export let state: State;
 document.onreadystatechange = function () {
     if (document.readyState === "complete") {
-        const state = new State();
-        // setTimeout(() => {
-        //     state.startGame(2);
-        // }, 3000);
+        state = new State();
+        state.startGame(GameDifficulty.Medium);
     }
 };

@@ -28,7 +28,7 @@ body {
     --text-color: #d1e3dd;
 }
 
-.game {
+.react-app {
     padding: 20px;
     box-sizing: border-box;
     height: 100vh;

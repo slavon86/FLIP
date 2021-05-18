@@ -2,6 +2,7 @@ import { Card, State } from "./state";
 import { GameDifficulty, getElement, GlobalState } from "./helpers";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { GameField } from "./components/GameField";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
 type CardCallbackFunction = (cardNumber: number) => void;
@@ -11,13 +12,52 @@ export class Renderer {
     callbackForStartButton: StartCallbackFunction | undefined = undefined;
     callbacksForCards: CardCallbackFunction | undefined = undefined;
     progressElement: HTMLDivElement | null = null;
+
     render(state: State): void {
+        // if (state.globalState === GlobalState.StartScreen) {
+        //     this.renderStartScreen();
+        //     return;
+        // }
+        //
+        // if (state.globalState === GlobalState.GameWin) {
+        //     this.showPage(GamePage.GameWinPage);
+        //     return;
+        // }
+        //
+        // if (state.globalState === GlobalState.GameFail) {
+        //     this.showPage(GamePage.GameFailPage);
+        //     return;
+        // }
+        //
+        // this.showPage(GamePage.FieldPage);
+        // if (state.globalState === GlobalState.GameInProgress) {
+        //     this.updateOnlyClassOfCards(state);
+        //     return;
+        // }
+
         ReactDOM.render(
-            <div>
-                <h1>Hello, Welcome to the first page, bro.</h1>
-            </div>,
-            getElement(".game")
+            <GameField
+                cards={state.cards}
+                difficulty={state.difficulty}
+                onCardClick={(cardIndex) => {
+                    this.onCard(cardIndex);
+                }}
+            />,
+            getElement(".react-app")
         );
+    }
+
+    private getDifficultyClass(difficulty: GameDifficulty) {
+        switch (difficulty) {
+            case GameDifficulty.Easy:
+                return "easy";
+            case GameDifficulty.Medium:
+                return "medium";
+            case GameDifficulty.Hard:
+                return "hard";
+            default:
+                throw "Incorrect difficulty of the game";
+        }
     }
 
     // render(state: State): void {
@@ -116,6 +156,7 @@ export class Renderer {
 
         const themeFormElement = getElement('form[name="theme"]');
         themeFormElement.addEventListener("change", this.onChangeTheme);
+        this.progressElement = document.querySelector(".left");
     }
 
     private onChangeTheme(): void {
