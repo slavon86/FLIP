@@ -3,10 +3,6 @@
     padding: 0;
 }
 
-body {
-    background: var(--background-color);
-}
-
 .theme-1 {
     --background-color: #F8EDE3;
     --background-card-front-color: #BDD2B6;
@@ -29,6 +25,10 @@ body {
 }
 
 .react-app {
+    background: var(--background-color);
+}
+
+.game{
     padding: 20px;
     box-sizing: border-box;
     height: 100vh;

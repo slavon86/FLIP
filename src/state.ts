@@ -153,10 +153,11 @@ export class State {
     private processProgressChange(progress: number) {
         this.timeProgress = progress; //this.timeProgress is not used
         //this.renderer.renderProgressBar(progress); //not page, only progress bar
+        this.renderer.render(this);
     }
     private processTimeout() {
         this.globalState = GlobalState.GameFail;
         this.timer.stop();
-        //this.renderer.render(this);
+        this.renderer.render(this);
     }
 }

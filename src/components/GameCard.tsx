@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Card } from "../state";
-import { render } from "react-dom";
 
 export class GameCard extends React.Component<GameCardProps> {
     constructor(props: GameCardProps) {

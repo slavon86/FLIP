@@ -3,6 +3,7 @@ import { GameDifficulty, getElement, GlobalState } from "./helpers";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { GameField } from "./components/GameField";
+import { ProgressBar } from "./components/ProgressBar";
 
 type StartCallbackFunction = (d: GameDifficulty) => void;
 type CardCallbackFunction = (cardNumber: number) => void;
@@ -36,13 +37,16 @@ export class Renderer {
         // }
 
         ReactDOM.render(
-            <GameField
-                cards={state.cards}
-                difficulty={state.difficulty}
-                onCardClick={(cardIndex) => {
-                    this.onCard(cardIndex);
-                }}
-            />,
+            <div className={"game"}>
+                <ProgressBar progress={state.timeProgress} />
+                <GameField
+                    cards={state.cards}
+                    difficulty={state.difficulty}
+                    onCardClick={(cardIndex) => {
+                        this.onCard(cardIndex);
+                    }}
+                />
+            </div>,
             getElement(".react-app")
         );
     }
