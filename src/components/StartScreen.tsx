@@ -18,38 +18,48 @@ export class StartScreen extends React.Component<
         };
     }
 
-    difficultyInput(diff: GameDifficulty) {
+    difficultyInput(diff: GameDifficulty, diffString: string) {
         return (
-            <input
-                type="radio"
-                id={gameDifficultyToString(diff)}
-                name="difficulty"
-                value={gameDifficultyToString(diff)}
-                checked={this.state.difficulty === diff}
-                onChange={(event) =>
-                    this.setState({
-                        difficulty: stringToGameDifficulty(event.target.value),
-                    })
-                }
-            />
+            <p>
+                <input
+                    type="radio"
+                    id={gameDifficultyToString(diff)}
+                    name="difficulty"
+                    value={gameDifficultyToString(diff)}
+                    checked={this.state.difficulty === diff}
+                    onChange={(event) =>
+                        this.setState({
+                            difficulty: stringToGameDifficulty(
+                                event.target.value
+                            ),
+                        })
+                    }
+                />
+                <label htmlFor={gameDifficultyToString(diff)}>
+                    {diffString}
+                </label>
+            </p>
         );
     }
 
-    themeInput(theme: string) {
+    themeInput(theme: string, themeLabel: string) {
         return (
-            <input
-                type="radio"
-                id={theme}
-                name={theme}
-                value={theme}
-                checked={this.state.theme === theme}
-                onChange={(event) => {
-                    this.setState({
-                        theme: event.target.value,
-                    });
-                    this.props.onChangeTheme(event.target.value);
-                }}
-            />
+            <p>
+                <input
+                    type="radio"
+                    id={theme}
+                    name={theme}
+                    value={theme}
+                    checked={this.state.theme === theme}
+                    onChange={(event) => {
+                        this.setState({
+                            theme: event.target.value,
+                        });
+                        this.props.onChangeTheme(event.target.value);
+                    }}
+                />
+                <label htmlFor={theme}>{themeLabel}</label>
+            </p>
         );
     }
 
@@ -60,46 +70,41 @@ export class StartScreen extends React.Component<
                     <div className="difficulty-form">
                         <form name="difficulty">
                             <p>Difficulty:</p>
-                            {this.difficultyInput(GameDifficulty.Easy)}
-                            <label htmlFor="easy">Easy</label>
-                            <br />
-                            {this.difficultyInput(GameDifficulty.Medium)}
-                            <label htmlFor="medium">Medium</label>
-                            <br />
-                            {this.difficultyInput(GameDifficulty.Hard)}
-                            <label htmlFor="hard">Hard</label>
+                            {this.difficultyInput(GameDifficulty.Easy, "Easy")}
+                            {this.difficultyInput(
+                                GameDifficulty.Medium,
+                                "Medium"
+                            )}
+                            {this.difficultyInput(GameDifficulty.Hard, "Hard")}
                         </form>
                     </div>
                     <div className="result-of-game">
-                        {this.props.resultLastGame === GlobalState.GameFail ? (
+                        {this.props.resultLastGame === GlobalState.GameFail && (
                             <div className="fail">
                                 <p>FAIL</p>
                                 <p>🙁</p>
                             </div>
-                        ) : (
-                            <p> </p>
                         )}
-
-                        {this.props.resultLastGame === GlobalState.GameWin ? (
+                        {this.props.resultLastGame === GlobalState.GameWin && (
                             <div className="win">
                                 <p>WIN</p>
                                 <p>😀</p>
                             </div>
-                        ) : (
-                            <p> </p>
+                        )}
+                        {this.props.resultLastGame ===
+                            GlobalState.StartScreen && (
+                            <div className="start-screen">
+                                <p></p>
+                                <p></p>
+                            </div>
                         )}
                     </div>
                     <div className="theme-form">
                         <form name="theme">
                             <p>Theme:</p>
-                            {this.themeInput("theme-1")}
-                            <label htmlFor="theme-1">Theme 1</label>
-                            <br />
-                            {this.themeInput("theme-2")}
-                            <label htmlFor="theme-2">Theme 2</label>
-                            <br />
-                            {this.themeInput("theme-3")}
-                            <label htmlFor="theme-3">Theme 3</label>
+                            {this.themeInput("theme-1", "Theme 1")}
+                            {this.themeInput("theme-2", "Theme 2")}
+                            {this.themeInput("theme-3", "Theme 3")}
                         </form>
                     </div>
                 </div>
