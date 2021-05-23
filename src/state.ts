@@ -72,18 +72,11 @@ export class State {
         this.timeProgress = 100;
         this.previousCard = -1;
         this.renderer = new Renderer();
-
-        this.renderer.onStartClick((selectedDifficulty) => {
-            this.startGame(selectedDifficulty);
-        });
-        this.renderer.onCardClick((cardIndex: number) => {
-            this.processClick(cardIndex);
-        });
         this.renderer.render(this);
         this.timer = new Timer(settings[this.difficulty].time);
     }
 
-    startGame(d: GameDifficulty) {
+    processGameStart(d: GameDifficulty) {
         this.difficulty = d;
         this.count = 0;
         this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
@@ -111,7 +104,7 @@ export class State {
         this.timer.start();
     }
 
-    private processClick(cardIndex: number) {
+    processCardClick(cardIndex: number) {
         if (cardIndex === this.previousCard) {
             return;
         }
@@ -151,8 +144,7 @@ export class State {
     }
 
     private processProgressChange(progress: number) {
-        this.timeProgress = progress; //this.timeProgress is not used
-        //this.renderer.renderProgressBar(progress); //not page, only progress bar
+        this.timeProgress = progress;
         this.renderer.render(this);
     }
     private processTimeout() {

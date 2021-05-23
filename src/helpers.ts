@@ -54,7 +54,7 @@ export class Timer {
             return;
         }
         setTimeout(() => {
-            this.progressChange();
+            this.progressChange(); //leak memory
         }, this.period);
     }
 }
@@ -98,6 +98,36 @@ export function getElement(selector: string) {
         throw new Error(`Can't find element '${selector}'.`);
     }
     return el;
+}
+
+export function stringToGameDifficulty(diff: string): GameDifficulty {
+    switch (diff) {
+        case "easy":
+            return GameDifficulty.Easy;
+        case "medium":
+            return GameDifficulty.Medium;
+        case "hard":
+            return GameDifficulty.Hard;
+        default:
+            throw new Error(
+                "function stringToGameDifficulty: Incorrect string of game difficulty"
+            );
+    }
+}
+
+export function gameDifficultyToString(difficulty: GameDifficulty) {
+    switch (difficulty) {
+        case GameDifficulty.Easy:
+            return "easy";
+        case GameDifficulty.Medium:
+            return "medium";
+        case GameDifficulty.Hard:
+            return "hard";
+        default:
+            throw new Error(
+                "function gameDifficultyToString: Incorrect difficulty of the game"
+            );
+    }
 }
 
 export enum GameDifficulty {
