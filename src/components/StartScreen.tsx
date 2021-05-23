@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
     GameDifficulty,
+    gameDifficultyToString,
     GlobalState,
     stringToGameDifficulty,
 } from "../helpers";
@@ -17,6 +18,41 @@ export class StartScreen extends React.Component<
         };
     }
 
+    difficultyInput(diff: GameDifficulty) {
+        return (
+            <input
+                type="radio"
+                id={gameDifficultyToString(diff)}
+                name="difficulty"
+                value={gameDifficultyToString(diff)}
+                checked={this.state.difficulty === diff}
+                onChange={(event) =>
+                    this.setState({
+                        difficulty: stringToGameDifficulty(event.target.value),
+                    })
+                }
+            />
+        );
+    }
+
+    themeInput(theme: string) {
+        return (
+            <input
+                type="radio"
+                id={theme}
+                name={theme}
+                value={theme}
+                checked={this.state.theme === theme}
+                onChange={(event) => {
+                    this.setState({
+                        theme: event.target.value,
+                    });
+                    this.props.onChangeTheme(event.target.value);
+                }}
+            />
+        );
+    }
+
     render() {
         return (
             <div className={"start-screen"}>
@@ -24,61 +60,13 @@ export class StartScreen extends React.Component<
                     <div className="difficulty-form">
                         <form name="difficulty">
                             <p>Difficulty:</p>
-                            <input
-                                type="radio"
-                                id="easy"
-                                name="difficulty"
-                                value="easy"
-                                checked={
-                                    this.state.difficulty ===
-                                    GameDifficulty.Easy
-                                }
-                                onChange={(event) =>
-                                    this.setState({
-                                        difficulty: stringToGameDifficulty(
-                                            event.target.value
-                                        ),
-                                    })
-                                }
-                            />
+                            {this.difficultyInput(GameDifficulty.Easy)}
                             <label htmlFor="easy">Easy</label>
                             <br />
-                            <input
-                                type="radio"
-                                id="medium"
-                                name="difficulty"
-                                value="medium"
-                                checked={
-                                    this.state.difficulty ===
-                                    GameDifficulty.Medium
-                                }
-                                onChange={(event) =>
-                                    this.setState({
-                                        difficulty: stringToGameDifficulty(
-                                            event.target.value
-                                        ),
-                                    })
-                                }
-                            />
+                            {this.difficultyInput(GameDifficulty.Medium)}
                             <label htmlFor="medium">Medium</label>
                             <br />
-                            <input
-                                type="radio"
-                                id="hard"
-                                name="difficulty"
-                                value="hard"
-                                checked={
-                                    this.state.difficulty ===
-                                    GameDifficulty.Hard
-                                }
-                                onChange={(event) =>
-                                    this.setState({
-                                        difficulty: stringToGameDifficulty(
-                                            event.target.value
-                                        ),
-                                    })
-                                }
-                            />
+                            {this.difficultyInput(GameDifficulty.Hard)}
                             <label htmlFor="hard">Hard</label>
                         </form>
                     </div>
@@ -104,49 +92,13 @@ export class StartScreen extends React.Component<
                     <div className="theme-form">
                         <form name="theme">
                             <p>Theme:</p>
-                            <input
-                                type="radio"
-                                id="theme-1"
-                                name="theme"
-                                value="theme-1"
-                                checked={this.state.theme === "theme-1"}
-                                onChange={(event) => {
-                                    this.setState({
-                                        theme: event.target.value,
-                                    });
-                                    this.props.onChangeTheme("theme-1");
-                                }}
-                            />
+                            {this.themeInput("theme-1")}
                             <label htmlFor="theme-1">Theme 1</label>
                             <br />
-                            <input
-                                type="radio"
-                                id="theme-2"
-                                name="theme"
-                                value="theme-2"
-                                checked={this.state.theme === "theme-2"}
-                                onChange={(event) => {
-                                    this.setState({
-                                        theme: event.target.value,
-                                    });
-                                    this.props.onChangeTheme("theme-2");
-                                }}
-                            />
+                            {this.themeInput("theme-2")}
                             <label htmlFor="theme-2">Theme 2</label>
                             <br />
-                            <input
-                                type="radio"
-                                id="theme-3"
-                                name="theme"
-                                value="theme-3"
-                                checked={this.state.theme === "theme-3"}
-                                onChange={(event) => {
-                                    this.setState({
-                                        theme: event.target.value,
-                                    });
-                                    this.props.onChangeTheme("theme-3");
-                                }}
-                            />
+                            {this.themeInput("theme-3")}
                             <label htmlFor="theme-3">Theme 3</label>
                         </form>
                     </div>
