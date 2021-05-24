@@ -81,6 +81,7 @@ export class State {
     processGameStart(d: GameDifficulty) {
         this.difficulty = d;
         this.count = 0;
+        this.previousCard = -1;
         this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
         this.cards = generateRandomPairs(
             this.emodji,
@@ -94,7 +95,7 @@ export class State {
             return result;
         });
         this.globalState = GlobalState.InitGame;
-        //this.renderer.render(this);
+        this.renderer.render(this);
         this.globalState = GlobalState.GameInProgress;
         this.timer = new Timer(settings[this.difficulty].time);
         this.timer.onTimeout(() => {
@@ -121,6 +122,7 @@ export class State {
             this.secondCard = cardIndex;
             this.cardState = CardsState.TwoCardsOpen;
             setTimeout(() => {
+                this.previousCard = -1;
                 if (
                     this.cards[this.firstCard].isEqual(
                         this.cards[this.secondCard]
@@ -136,7 +138,6 @@ export class State {
                 } else {
                     this.cards[this.firstCard].isFlipped = false;
                     this.cards[this.secondCard].isFlipped = false;
-                    this.previousCard = -1;
                 }
                 this.cardState = CardsState.NoCardsOpen;
                 this.renderer.render(this);

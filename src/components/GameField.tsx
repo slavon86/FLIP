@@ -22,6 +22,7 @@ export class GameField extends React.Component<GameFieldProps> {
                             card={card}
                             onClick={() => {
                                 this.props.onCardClick(cardNumber);
+                                console.log(cardNumber);
                             }}
                         />
                     );
