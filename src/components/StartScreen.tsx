@@ -14,7 +14,6 @@ export class StartScreen extends React.Component<
         super(props);
         this.state = {
             difficulty: GameDifficulty.Easy,
-            theme: "theme-1",
         };
     }
 
@@ -50,11 +49,8 @@ export class StartScreen extends React.Component<
                     id={theme}
                     name={theme}
                     value={theme}
-                    checked={this.state.theme === theme}
+                    checked={this.props.theme === theme}
                     onChange={(event) => {
-                        this.setState({
-                            theme: event.target.value,
-                        });
                         this.props.onChangeTheme(event.target.value);
                     }}
                 />
@@ -79,20 +75,19 @@ export class StartScreen extends React.Component<
                         </form>
                     </div>
                     <div className="result-of-game">
-                        {this.props.resultLastGame === GlobalState.GameFail && (
+                        {this.props.globalState === GlobalState.GameFail && (
                             <div className="fail">
                                 <p>FAIL</p>
                                 <p>🙁</p>
                             </div>
                         )}
-                        {this.props.resultLastGame === GlobalState.GameWin && (
+                        {this.props.globalState === GlobalState.GameWin && (
                             <div className="win">
                                 <p>WIN</p>
                                 <p>😀</p>
                             </div>
                         )}
-                        {this.props.resultLastGame ===
-                            GlobalState.StartScreen && (
+                        {this.props.globalState === GlobalState.StartScreen && (
                             <div className="start-screen">
                                 <p></p>
                                 <p></p>
@@ -124,12 +119,12 @@ export class StartScreen extends React.Component<
 }
 
 interface StartScreenProps {
+    globalState: GlobalState;
+    theme: string;
     onGameStart: (diff: GameDifficulty) => void;
-    resultLastGame: GlobalState;
     onChangeTheme: (theme: string) => void;
 }
 
 interface StartScreenState {
     difficulty: GameDifficulty;
-    theme: string;
 }

@@ -8,16 +8,18 @@ export class Renderer {
     render(state: State): void {
         ReactDOM.render(
             <FullGame
-                onCardClick={(cardIndex) => {
-                    state.processCardClick(cardIndex);
-                }}
-                onGameStart={(diff: GameDifficulty) =>
-                    state.processGameStart(diff)
-                }
                 difficulty={state.difficulty}
                 cards={state.cards}
                 globalState={state.globalState}
                 timeProgress={state.timeProgress}
+                theme={state.theme}
+                onCardClick={(cardIndex) => state.processCardClick(cardIndex)}
+                onGameStart={(diff: GameDifficulty) =>
+                    state.processGameStart(diff)
+                }
+                onChangeTheme={(theme: string) =>
+                    state.processChangeTheme(theme)
+                }
             />,
             getElement(".react-app")
         );

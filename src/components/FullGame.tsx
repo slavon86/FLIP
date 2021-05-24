@@ -13,11 +13,11 @@ export class FullGame extends React.Component<FullGameProps> {
     handleMouseDown(e: React.MouseEvent<HTMLElement>): void {
         e.preventDefault();
     }
-    theme = "theme-1";
+
     render() {
         return (
             <div
-                className={"game " + this.theme}
+                className={"game " + this.props.theme}
                 onMouseDown={this.handleMouseDown}
             >
                 <ProgressBar progress={this.props.timeProgress} />
@@ -31,17 +31,13 @@ export class FullGame extends React.Component<FullGameProps> {
                     />
                 ) : (
                     <StartScreen
+                        theme={this.props.theme}
+                        globalState={this.props.globalState}
                         onGameStart={(diff: GameDifficulty) =>
                             this.props.onGameStart(diff)
                         }
-                        resultLastGame={this.props.globalState}
-                        onChangeTheme={(stringTheme: string) => {
-                            const el = document.querySelector(".game");
-                            if (el === null) {
-                                throw new Error(`Can't find element ".game".`);
-                            }
-                            el.className = "game " + stringTheme;
-                            this.theme = stringTheme;
+                        onChangeTheme={(theme: string) => {
+                            this.props.onChangeTheme(theme);
                         }}
                     />
                 )}
@@ -55,10 +51,8 @@ interface FullGameProps {
     globalState: GlobalState;
     cards: Card[];
     difficulty: GameDifficulty;
+    theme: string;
     onCardClick: (cardIndex: number) => void;
     onGameStart: (diff: GameDifficulty) => void;
-}
-
-interface FullGameState {
-    theme: string;
+    onChangeTheme: (theme: string) => void;
 }

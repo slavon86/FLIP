@@ -25,6 +25,7 @@ export class State {
     private firstCard = 0;
     private secondCard = 0;
     difficulty: GameDifficulty;
+    theme: string;
     private numberOfPairs: number | undefined;
     private count = 0;
     private emodji: Array<string> = [
@@ -69,6 +70,7 @@ export class State {
         this.cardState = CardsState.NoCardsOpen;
         this.globalState = GlobalState.StartScreen;
         this.difficulty = GameDifficulty.Easy;
+        this.theme = "theme-1";
         this.timeProgress = 100;
         this.previousCard = -1;
         this.renderer = new Renderer();
@@ -92,7 +94,7 @@ export class State {
             return result;
         });
         this.globalState = GlobalState.InitGame;
-        this.renderer.render(this);
+        //this.renderer.render(this);
         this.globalState = GlobalState.GameInProgress;
         this.timer = new Timer(settings[this.difficulty].time);
         this.timer.onTimeout(() => {
@@ -147,9 +149,15 @@ export class State {
         this.timeProgress = progress;
         this.renderer.render(this);
     }
+
     private processTimeout() {
         this.globalState = GlobalState.GameFail;
         this.timer.stop();
+        this.renderer.render(this);
+    }
+
+    processChangeTheme(theme: string) {
+        this.theme = theme;
         this.renderer.render(this);
     }
 }
