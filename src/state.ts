@@ -108,21 +108,19 @@ export class State {
     }
 
     processCardClick(cardIndex: number) {
-        if (cardIndex === this.previousCard) {
-            return;
-        }
-        this.previousCard = cardIndex;
         const card = this.cards[cardIndex];
         if (this.cardState === CardsState.NoCardsOpen) {
             card.isFlipped = true;
             this.firstCard = cardIndex;
             this.cardState = CardsState.OneCardOpen;
-        } else if (this.cardState === CardsState.OneCardOpen) {
+        } else if (
+            this.cardState === CardsState.OneCardOpen &&
+            this.firstCard != cardIndex
+        ) {
             card.isFlipped = true;
             this.secondCard = cardIndex;
             this.cardState = CardsState.TwoCardsOpen;
             setTimeout(() => {
-                this.previousCard = -1;
                 if (
                     this.cards[this.firstCard].isEqual(
                         this.cards[this.secondCard]
