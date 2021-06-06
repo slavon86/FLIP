@@ -1,49 +1,41 @@
-import * as React from "react";
+import React from "react";
 import { Card } from "../state";
 import { ProgressBar } from "./ProgressBar";
 import { GameDifficulty, GlobalState } from "../helpers";
 import { GameField } from "./GameField";
 import { StartScreen } from "./StartScreen";
 
-export class FullGame extends React.Component<FullGameProps> {
-    constructor(props: FullGameProps) {
-        super(props);
-    }
-
-    handleMouseDown(e: React.MouseEvent<HTMLElement>): void {
-        e.preventDefault();
-    }
-
-    render() {
-        return (
-            <div
-                className={"game " + this.props.theme}
-                onMouseDown={this.handleMouseDown}
-            >
-                <ProgressBar progress={this.props.timeProgress} />
-                {this.props.globalState === GlobalState.GameInProgress ? (
-                    <GameField
-                        cards={this.props.cards}
-                        difficulty={this.props.difficulty}
-                        onCardClick={(cardIndex) => {
-                            this.props.onCardClick(cardIndex);
-                        }}
-                    />
-                ) : (
-                    <StartScreen
-                        theme={this.props.theme}
-                        globalState={this.props.globalState}
-                        onGameStart={(diff: GameDifficulty) =>
-                            this.props.onGameStart(diff)
-                        }
-                        onChangeTheme={(theme: string) => {
-                            this.props.onChangeTheme(theme);
-                        }}
-                    />
-                )}
-            </div>
-        );
-    }
+export function FullGame(props: FullGameProps) {
+    return (
+        <div
+            className={"game " + props.theme}
+            onMouseDown={(e: React.MouseEvent<HTMLElement>): void => {
+                e.preventDefault();
+            }}
+        >
+            <ProgressBar progress={props.timeProgress} />
+            {props.globalState === GlobalState.GameInProgress ? (
+                <GameField
+                    cards={props.cards}
+                    difficulty={props.difficulty}
+                    onCardClick={(cardIndex) => {
+                        props.onCardClick(cardIndex);
+                    }}
+                />
+            ) : (
+                <StartScreen
+                    theme={props.theme}
+                    globalState={props.globalState}
+                    onGameStart={(diff: GameDifficulty) =>
+                        props.onGameStart(diff)
+                    }
+                    onChangeTheme={(theme: string) => {
+                        props.onChangeTheme(theme);
+                    }}
+                />
+            )}
+        </div>
+    );
 }
 
 interface FullGameProps {

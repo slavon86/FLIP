@@ -1,20 +1,14 @@
-import * as React from "react";
+import React from "react";
 
-export class ProgressBar extends React.Component<ProgressBarProps> {
-    constructor(props: ProgressBarProps) {
-        super(props);
-    }
-
-    render() {
-        const divStyle = {
-            width: this.props.progress.toString() + "%",
-        };
-        return (
-            <div className={"progress"}>
-                <div className={"left"} style={divStyle}></div>
-            </div>
-        );
-    }
+export function ProgressBar(props: ProgressBarProps) {
+    return (
+        <div className={"progress"}>
+            <div
+                className={"left"}
+                style={{ width: props.progress.toString() + "%" }}
+            ></div>
+        </div>
+    );
 }
 
 interface ProgressBarProps {

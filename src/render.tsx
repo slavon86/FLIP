@@ -1,6 +1,6 @@
 import { State } from "./state";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { FullGame } from "./components/FullGame";
 import { GameDifficulty, getElement } from "./helpers";
 
