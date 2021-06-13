@@ -18,7 +18,7 @@ const themeList = [
     { id: "theme-3", name: "Theme-3" },
 ];
 
-export function StartScreen(props: StartScreenProps, state: StartScreenState) {
+export function StartScreen(props: StartScreenProps) {
     const [difficulty, setDifficulty] = useState(GameDifficulty.Easy);
     const [theme, setTheme] = useState("theme-1");
 
@@ -114,8 +114,4 @@ interface StartScreenProps {
     theme: string;
     onGameStart: (diff: GameDifficulty) => void;
     onChangeTheme: (theme: string) => void;
-}
-
-interface StartScreenState {
-    difficulty: GameDifficulty;
 }
