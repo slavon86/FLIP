@@ -7,15 +7,15 @@ import {
 } from "../helpers";
 
 const difficultyList = [
-    { id: GameDifficulty.Easy, name: "Easy" },
-    { id: GameDifficulty.Medium, name: "Medium" },
-    { id: GameDifficulty.Hard, name: "Hard" },
+    { value: GameDifficulty.Easy, label: "Easy" },
+    { value: GameDifficulty.Medium, label: "Medium" },
+    { value: GameDifficulty.Hard, label: "Hard" },
 ];
 
 const themeList = [
-    { id: "theme-1", name: "Theme-1" },
-    { id: "theme-2", name: "Theme-2" },
-    { id: "theme-3", name: "Theme-3" },
+    { value: "theme-1", label: "Theme-1" },
+    { value: "theme-2", label: "Theme-2" },
+    { value: "theme-3", label: "Theme-3" },
 ];
 
 export function StartScreen(props: StartScreenProps) {
@@ -29,13 +29,13 @@ export function StartScreen(props: StartScreenProps) {
                     <form name="difficulty">
                         <p>Difficulty:</p>
                         {difficultyList.map((item) => (
-                            <p key={gameDifficultyToString(item.id)}>
+                            <p key={gameDifficultyToString(item.value)}>
                                 <input
                                     type="radio"
-                                    id={gameDifficultyToString(item.id)}
+                                    id={gameDifficultyToString(item.value)}
                                     name="difficulty"
-                                    value={gameDifficultyToString(item.id)}
-                                    checked={difficulty === item.id}
+                                    value={gameDifficultyToString(item.value)}
+                                    checked={difficulty === item.value}
                                     onChange={(event) =>
                                         setDifficulty(
                                             stringToGameDifficulty(
@@ -45,9 +45,9 @@ export function StartScreen(props: StartScreenProps) {
                                     }
                                 />
                                 <label
-                                    htmlFor={gameDifficultyToString(item.id)}
+                                    htmlFor={gameDifficultyToString(item.value)}
                                 >
-                                    {item.name}
+                                    {item.label}
                                 </label>
                             </p>
                         ))}
@@ -77,19 +77,19 @@ export function StartScreen(props: StartScreenProps) {
                     <form name="theme">
                         <p>Theme:</p>
                         {themeList.map((item) => (
-                            <p key={item.id}>
+                            <p key={item.value}>
                                 <input
                                     type="radio"
-                                    id={item.id}
+                                    id={item.value}
                                     name="theme"
-                                    value={item.id}
-                                    checked={theme === item.id}
+                                    value={item.value}
+                                    checked={theme === item.value}
                                     onChange={(event) => {
                                         setTheme(event.target.value);
-                                        props.onChangeTheme(item.id);
+                                        props.onChangeTheme(item.value);
                                     }}
                                 />
-                                <label htmlFor={item.id}>{item.name}</label>
+                                <label htmlFor={item.value}>{item.label}</label>
                             </p>
                         ))}
                     </form>

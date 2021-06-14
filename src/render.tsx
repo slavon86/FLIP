@@ -13,13 +13,9 @@ export class Renderer {
                 globalState={state.globalState}
                 timeProgress={state.timeProgress}
                 theme={state.theme}
-                onCardClick={(cardIndex) => state.processCardClick(cardIndex)}
-                onGameStart={(diff: GameDifficulty) =>
-                    state.processGameStart(diff)
-                }
-                onChangeTheme={(theme: string) =>
-                    state.processChangeTheme(theme)
-                }
+                onCardClick={state.processCardClick.bind(state)}
+                onGameStart={state.processGameStart.bind(state)}
+                onChangeTheme={state.processChangeTheme.bind(state)}
             />,
             getElement(".react-app")
         );

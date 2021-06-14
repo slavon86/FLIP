@@ -18,20 +18,14 @@ export function FullGame(props: FullGameProps) {
                 <GameField
                     cards={props.cards}
                     difficulty={props.difficulty}
-                    onCardClick={(cardIndex) => {
-                        props.onCardClick(cardIndex);
-                    }}
+                    onCardClick={props.onCardClick}
                 />
             ) : (
                 <StartScreen
                     theme={props.theme}
                     globalState={props.globalState}
-                    onGameStart={(diff: GameDifficulty) =>
-                        props.onGameStart(diff)
-                    }
-                    onChangeTheme={(theme: string) => {
-                        props.onChangeTheme(theme);
-                    }}
+                    onGameStart={props.onGameStart}
+                    onChangeTheme={props.onChangeTheme}
                 />
             )}
         </div>
