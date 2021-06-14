@@ -5,11 +5,12 @@ import {
     GlobalState,
     stringToGameDifficulty,
 } from "../helpers";
+import { RadioButtonGroup } from "./RadioButtonGroup";
 
 const difficultyList = [
-    { value: GameDifficulty.Easy, label: "Easy" },
-    { value: GameDifficulty.Medium, label: "Medium" },
-    { value: GameDifficulty.Hard, label: "Hard" },
+    { value: "easy", label: "Easy" },
+    { value: "medium", label: "Medium" },
+    { value: "hard", label: "Hard" },
 ];
 
 const themeList = [
@@ -28,29 +29,14 @@ export function StartScreen(props: StartScreenProps) {
                 <div className="difficulty-form">
                     <form name="difficulty">
                         <p>Difficulty:</p>
-                        {difficultyList.map((item) => (
-                            <p key={gameDifficultyToString(item.value)}>
-                                <input
-                                    type="radio"
-                                    id={gameDifficultyToString(item.value)}
-                                    name="difficulty"
-                                    value={gameDifficultyToString(item.value)}
-                                    checked={difficulty === item.value}
-                                    onChange={(event) =>
-                                        setDifficulty(
-                                            stringToGameDifficulty(
-                                                event.target.value
-                                            )
-                                        )
-                                    }
-                                />
-                                <label
-                                    htmlFor={gameDifficultyToString(item.value)}
-                                >
-                                    {item.label}
-                                </label>
-                            </p>
-                        ))}
+                        <RadioButtonGroup
+                            groupName="difficulty"
+                            groupItems={difficultyList}
+                            currentValue={gameDifficultyToString(difficulty)}
+                            onValueChange={(value) => {
+                                setDifficulty(stringToGameDifficulty(value));
+                            }}
+                        />
                     </form>
                 </div>
                 <div className="result-of-game">
@@ -76,22 +62,15 @@ export function StartScreen(props: StartScreenProps) {
                 <div className="theme-form">
                     <form name="theme">
                         <p>Theme:</p>
-                        {themeList.map((item) => (
-                            <p key={item.value}>
-                                <input
-                                    type="radio"
-                                    id={item.value}
-                                    name="theme"
-                                    value={item.value}
-                                    checked={theme === item.value}
-                                    onChange={(event) => {
-                                        setTheme(event.target.value);
-                                        props.onChangeTheme(item.value);
-                                    }}
-                                />
-                                <label htmlFor={item.value}>{item.label}</label>
-                            </p>
-                        ))}
+                        <RadioButtonGroup
+                            groupName="theme"
+                            groupItems={themeList}
+                            currentValue={theme}
+                            onValueChange={(value) => {
+                                setTheme(value);
+                                props.onChangeTheme(value);
+                            }}
+                        />
                     </form>
                 </div>
             </div>
