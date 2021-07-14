@@ -6,8 +6,9 @@ import {
     stringToGameDifficulty,
 } from "../helpers";
 import { RadioButtonGroup } from "./RadioButtonGroup";
-import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheme } from "../features/theme/themeSlice";
 
 const difficultyList = [
     { value: "easy", label: "Easy" },
@@ -23,8 +24,8 @@ const themeList = [
 
 export function StartScreen(props: StartScreenProps) {
     const [difficulty, setDifficulty] = useState(GameDifficulty.Easy);
-    //const [theme, setTheme] = useState("theme-1");
     const theme = useSelector((state: RootState) => state.theme.value);
+    const dispatch = useDispatch();
 
     return (
         <div className={"start-screen"}>
@@ -57,8 +58,8 @@ export function StartScreen(props: StartScreenProps) {
                     )}
                     {props.globalState === GlobalState.StartScreen && (
                         <div className="start-screen">
-                            <p> </p>
-                            <p> </p>
+                            <p></p>
+                            <p></p>
                         </div>
                     )}
                 </div>
@@ -70,7 +71,7 @@ export function StartScreen(props: StartScreenProps) {
                             groupItems={themeList}
                             currentValue={theme}
                             onValueChange={(value) => {
-                                props.onChangeTheme(value);
+                                dispatch(setTheme(value));
                             }}
                         />
                     </form>
@@ -92,7 +93,5 @@ export function StartScreen(props: StartScreenProps) {
 
 interface StartScreenProps {
     globalState: GlobalState;
-    theme: string;
     onGameStart: (diff: GameDifficulty) => void;
-    onChangeTheme: (theme: string) => void;
 }
