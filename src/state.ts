@@ -19,60 +19,30 @@ export class Card {
 
 export class State {
     cards: Card[] = [];
-    private cardState: CardsState;
     globalState: GlobalState;
-    private previousCard: number;
-    private firstCard = 0;
-    private secondCard = 0;
     difficulty: GameDifficulty;
     theme: string;
-    private numberOfPairs: number | undefined;
-    private count = 0;
-    private emodji: Array<string> = [
-        "🧠",
-        "😀",
-        "😵",
-        "😎",
-        "😱",
-        "😈",
-        "🤖",
-        "👽",
-        "🎃",
-        "👊",
-        "👍",
-        "👎",
-        "👈",
-        "👉",
-        "👆",
-        "👇",
-        "🖖",
-        "🦾",
-        "💪",
-        "👁",
-        "👂",
-        "🦶",
-        "🦷",
-        "☂",
-        "🌂",
-        "👓",
-        "🥽",
-        "💼",
-        "🎒",
-        "⛑",
-        "👞",
-        "👠",
-        "👑",
-    ];
+    timeProgress: number;
+    private cardState: CardsState;
+    private numberOfPairs: number;
+    private count: number;
+    private firstCard: number;
+    private secondCard: number;
     private renderer: Renderer;
     private timer: Timer;
-    timeProgress: number;
+    private emodji: Array<string> = ["🧠","😀","😵","😎","😱","😈","🤖","👽","🎃","👊","👍","👎","👈","👉","👆",
+                    "👇","🖖","🦾","💪","👁","👂","🦶","🦷","☂","🌂","👓","🥽","💼","🎒","⛑","👞","👠","👑", ];
+
     constructor() {
-        this.cardState = CardsState.NoCardsOpen;
         this.globalState = GlobalState.StartScreen;
         this.difficulty = GameDifficulty.Easy;
+        this.count = 0;
+        this.firstCard = 0;
+        this.secondCard = 0;    
+        this.cardState = CardsState.NoCardsOpen;
+        this.numberOfPairs = 0;
         this.theme = "theme-1";
         this.timeProgress = 100;
-        this.previousCard = -1;
         this.renderer = new Renderer();
         this.renderer.render(this);
         this.timer = new Timer(settings[this.difficulty].time);
@@ -81,7 +51,9 @@ export class State {
     processGameStart(d: GameDifficulty) {
         this.difficulty = d;
         this.count = 0;
-        this.previousCard = -1;
+        this.firstCard = 0;
+        this.secondCard = 0;    
+        this.cardState = CardsState.NoCardsOpen;
         this.numberOfPairs = Math.pow(settings[d].size, 2) / 2;
         this.cards = generateRandomPairs(
             this.emodji,
